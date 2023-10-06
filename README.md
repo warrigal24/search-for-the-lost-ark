@@ -12,7 +12,7 @@ Prior to World War I, the Ark was hidden in the local forest so that it would be
 
 The priest that hid the Ark recently passed away, taking the location of the Ark to his grave. The Church Council has decided that it's time to recover the Ark. As a seminarian (or trainee priest), they have asked you to return to your local village, use your local knowledge to find the Ark and return it to its rightful place on the altar in your church.
 
-This is a traditional text adventure that was written for [ParserComp 2023](https://itch.io/jam/parsercomp-2023), 30 April to 30 June 2023. The game is hosted at [Search for the Lost Ark](https://warrigal.itch.io/search-for-the-lost-ark).
+This is a traditional text adventure that was written for [ParserComp 2023](https://itch.io/jam/parsercomp-2023), 30 April to 30 June 2023.
 
 ## Release notes
 
