@@ -1,0 +1,4155 @@
+!% -~S
+!% $OMIT_UNUSED_ROUTINES=1
+!% $ZCODE_LESS_DICT_DATA=1
+!% $MAX_ABBREVS=96
+!========================================
+! Search for the Lost Ark
+! Copyright © 2023 Garry Francis
+!========================================
+!Constant DEBUG;
+
+Abbreviate "freshly-turned earth";
+Abbreviate "Ark of the Covenant";
+Abbreviate "Father Alucard";
+Abbreviate "ou'll have to ";
+Abbreviate "Father Matisse";
+Abbreviate "You'll need";
+Abbreviate "wooden door";
+Abbreviate "diving suit";
+Abbreviate "There's no";
+Abbreviate " something";
+Abbreviate "You can't ";
+Abbreviate " through";
+Abbreviate " on the ";
+Abbreviate "already ";
+Abbreviate " in the ";
+Abbreviate " to the ";
+Abbreviate " of the ";
+Abbreviate "vicarage";
+Abbreviate "You're ";
+Abbreviate " shall ";
+Abbreviate "steeple";
+Abbreviate " first.";
+Abbreviate " have ";
+Abbreviate " your ";
+Abbreviate " again";
+Abbreviate "notice";
+Abbreviate " from ";
+Abbreviate "church";
+Abbreviate "ladder";
+Abbreviate "water";
+Abbreviate "'And ";
+Abbreviate "Moses";
+Abbreviate " like";
+Abbreviate ", but";
+Abbreviate "round";
+Abbreviate " the ";
+Abbreviate "north";
+Abbreviate ". It ";
+Abbreviate " with";
+Abbreviate "Bible";
+Abbreviate " are ";
+Abbreviate " you ";
+Abbreviate "ould ";
+Abbreviate "thing";
+Abbreviate " what";
+Abbreviate "It's ";
+Abbreviate "under";
+Abbreviate " can ";
+Abbreviate "?^A: ";
+Abbreviate ". The";
+Abbreviate " that";
+Abbreviate " was ";
+Abbreviate " and ";
+Abbreviate "here";
+Abbreviate "ight";
+Abbreviate " you";
+Abbreviate "ing ";
+Abbreviate " to ";
+Abbreviate "The ";
+Abbreviate "You ";
+Abbreviate "his ";
+Abbreviate ".^* ";
+Abbreviate ", so";
+Abbreviate "tion";
+Abbreviate " of ";
+Abbreviate "n't ";
+Abbreviate "side";
+Abbreviate " for";
+Abbreviate " is ";
+Abbreviate "'s ";
+Abbreviate "You";
+Abbreviate "re ";
+Abbreviate "one";
+Abbreviate "en ";
+Abbreviate "ing";
+Abbreviate "and";
+Abbreviate " be";
+Abbreviate "out";
+Abbreviate "God";
+Abbreviate "ly ";
+Abbreviate "ave";
+Abbreviate " in";
+Abbreviate "ver";
+Abbreviate "ear";
+Abbreviate "ent";
+Abbreviate ".^^";
+Abbreviate "all";
+Abbreviate "rea";
+Abbreviate "est";
+Abbreviate " a ";
+Abbreviate " it";
+Abbreviate "the";
+Abbreviate "ed ";
+Abbreviate ", ";
+Abbreviate ". ";
+Abbreviate "s.";
+
+Constant Story "Search for the Lost Ark";
+#Ifv5;
+Zcharacter table + '@{A9}'; !Add copyright symbol
+Constant Headline "^Copyright @{A9} 2023 Garry Francis^Type ABOUT for further info and credits.^^";
+Constant ANDRE "Andr@'e";
+Constant RESUME "resum@'e";
+Constant SLAEGAN "sl@aegan";
+#Ifnot;
+Constant Headline "^Copyright (c) 2023 Garry Francis^Type ABOUT for further info and credits.^^";
+Constant ANDRE "Andre";
+Constant RESUME "resume";
+Constant SLAEGAN "slaegan";
+#Endif;
+
+Array UUID_ARRAY string "UUID://20c07a3d-6486-4e59-a560-a606edecf9e0//";
+#Ifdef UUID_ARRAY;
+#Endif;
+
+Release 1;
+Serial "230629";
+
+!Inform 6 constants
+Constant AMUSING_PROVIDED;
+Constant DEATH_MENTION_UNDO;
+Constant MAX_CARRIED = 10;
+Constant NO_SCORE;
+
+!Puny constants
+Constant CUSTOM_ABBREVIATIONS;
+Constant OPTIONAL_EXTENDED_METAVERBS;
+Constant OPTIONAL_EXTENDED_VERBSET;
+Constant OPTIONAL_FULL_DIRECTIONS;
+#Ifv5;
+Constant OPTIONAL_PROVIDE_UNDO;
+#Endif;
+Constant RUNTIME_ERRORS 0;!0 for release, 2 for debug
+
+!PunyInform static messages
+Constant MSG_ATTACK_DEFAULT "When the Earth was filled with violence, God brought about the great flood. Do not provoke Him or He may flood the Earth again. Save your violence until you really need it.";
+Constant MSG_MILD_DEFAULT "When the Lord said, 'Thou shalt swear by his name', this wasn't quite what he meant.";
+Constant MSG_PARSER_NO_INPUT "You need to enter a command.";
+Constant MSG_PARSER_UNKNOWN_VERB "That's not a verb I recognise.";
+Constant MSG_PRAY_DEFAULT "You pray to the Lord in the hope that he will guide you in your quest.";
+Constant MSG_SING_DEFAULT "You start to sing a hymn, but realise this isn't going to help you on your quest. Nevertheless, you feel better.";
+Constant MSG_SORRY_DEFAULT "Oh, don't apologise.";
+Constant MSG_STRONG_DEFAULT "When God said 'Swear unto me', this wasn't what he meant. Wash your mouth out with soap and water.";
+Constant MSG_SWIM_DEFAULT "Swimming requires water. Take a look around. Do you see any water here?";
+Constant MSG_TAKE_YOURSELF "That would be a clever trick.";
+Constant MSG_THINK_DEFAULT "You wonder how you ever got into this predicament. On reflection, you think it must be the Lord's way of making you stronger.";
+
+!PunyInform dynamic messages
+Constant MSG_CLOSE_NOT_OPEN 1000;
+Constant MSG_LOCK_ALREADY_LOCKED 1001;
+Constant MSG_LOCK_CLOSE_FIRST 1002;
+Constant MSG_LOCK_KEY_DOESNT_FIT 1003;
+Constant MSG_UNLOCK_ALREADY_UNLOCKED 1004;
+Constant MSG_UNLOCK_KEY_DOESNT_FIT 1005;
+
+Constant MSG_AUTO_TAKE_NOT_HELD 1006;
+Constant MSG_DIG_NO_USE 1007;
+Constant MSG_JUMP 1008;
+Constant MSG_LISTEN_DEFAULT 1009;
+Constant MSG_SMELL_DEFAULT 1010;
+Constant MSG_TAKE_SCENERY 1011;
+Constant MSG_TAKE_STATIC 1012;
+Constant MSG_WEAR_ALREADY_WORN 1013;
+Constant MSG_WEAR_DEFAULT 1014;
+
+!Game-specific constants
+Constant AN "an";
+Constant SOME "some";
+Constant THE "the";
+Constant TWO "two";
+Constant YOUR "your";
+Constant ATTACHED_TO_ARK " attached to the Ark.";
+Constant CANT_DIG_ANYTHING "You can't dig anything with ";
+Constant CHOICE_OF_DIRECTIONS "You have a choice of directions here. Make sure you explore them all.";
+Constant CLAMBER_UP_LADDER "You clamber up the ladder.^^";
+Constant FOLLOW_PATH "You follow the path as it turns a corner to the ";
+Constant FOREST_IS_TOO_DENSE "The forest is too dense in that direction.";
+Constant IF_YOU_HAD_A_LADDER "If you had a ladder, you could climb onto the roof from here.";
+Constant IF_YOU_WANT_TO_LIGHT_SOMETHING "If you want to light something, just say so and I'll get a match and light it for you.";
+Constant IT_SAYS "It says, ";
+Constant NEED_LADDER "You would need a ladder to climb up there.";
+Constant TOO_FAR_AWAY "It's too far away.";
+Constant WOULD_NOT_BE_PROPER "It would not be proper for a seminarian to be seen grovelling in the dirt. Perhaps you should use a tool.";
+Constant YOU_SHOULD_READ_IT " Perhaps you should read it.";
+
+!Game-specific variables
+Attribute indoors;
+Attribute underwater;
+
+Array combination string 5;
+Array digits string "123456789";
+Array stringArray -> 8;
+Array genesis_passage --> "0" "1:9" "6:19" "6:10" "2:10" "47:2" "30:20" "7:10" "21:4";
+Array exodus_passage --> "0" "12:49" "31:18" "8:27" "25:34" "0" "20:9" "25:37";
+Array leviticus_passage --> "0" "7:7" "16:1" "19:23" "11:20" "0" "0" "4:6";
+Array numbers_passage --> "0" "7:16" "10:2" "22:28" "0" "31:8" "35:13" "19:11" "0" "34:13";
+Array deuteronomy_passage --> "0" "24:5" "3:8" "19:7" "0" "0" "5:13" "15:1";
+
+!Replaced actions
+Replace GoSub;
+Replace LockSub;
+Replace UnlockSub;
+
+Include "globals.h";
+
+Global genesis;
+Global exodus;
+Global leviticus;
+Global numbers;
+Global deuteronomy;
+
+!========================================
+! Entry point routines
+!========================================
+[ Amusing;
+  "^Have you tried:^* Examining yourself.^* Using FART, JUMP, PRAY, SING, THINK or the magic word XYZZY.^* Reading the notice on the billboard outside the gate.^* Examining the shovel and the sledge hammer.^* Examining the cars or carriages at the end of the road.^* Searching, smelling or taking the body of Father Matisse.^* Taking the coffin.^* Filling in the grave.^* Drinking the holy water in the stoup.^* Reading the notice and the jokes on the noticeboard in the nave.^* Sitting, standing or lying on the pews, the bed and the stump.^* Putting anything other than the Bible on the lectern.^* Going any direction other than down in the steeple or on the vicarage roof.^* Asking Father Alucard about himself, me, accent, Ark, Bible, Canaan, church, commandments, council, cross, crucifix, Jesus, love, God, Matisse, Moses, the five books of Moses, Romania, vicarage, Yahweh and (most importantly) vampires.^* Removing your cassock anywhere other than the pond.^* Removing your underwear at the pond.^* Examining the shore at the pond.^* Drinking the water in the pond before and after diving to the bottom.^* Climbing a tree in the forest, then using HINT.^* Moving the stump using (say) PULL or PUSH.^* Lighting the dynamite while you're holding it.^* Blowing up the stump and not moving away to safety.";
+];
+
+[ ChooseObjects obj code;
+  if (code == 2)
+  {
+    ! Stage 1: Disambiguation
+    if (action_to_be == ##Close && obj has open)
+      return 1; !Appropriate
+    if (action_to_be == ##Lock && obj hasnt locked)
+      return 1; !Appropriate
+    if (action_to_be == ##Open && obj hasnt open)
+      return 1; !Appropriate
+    if (action_to_be == ##Unlock && obj has locked)
+      return 1; !Appropriate
+    return 0; !Inappropriate
+  }
+  ! Stage 2: Processing an "all"
+  if (obj has scenery or concealed or static or animate)
+    return 2; !Force exclusion
+  return 0; !Accept parser's decision
+];
+
+[ LibraryMessages p_msg p_arg_1 p_arg_2;
+  switch (p_msg)
+  {
+    MSG_CLOSE_NOT_OPEN:
+      print_ret (CTheyreOrIts)noun, " already closed.";
+    MSG_LOCK_ALREADY_LOCKED:
+      print_ret (CTheyreOrIts)noun, " already locked.";
+    MSG_LOCK_CLOSE_FIRST:
+      "You'll have to close ", (ItOrThem)noun, " first.";
+    MSG_LOCK_KEY_DOESNT_FIT:
+      print_ret (The)second, " ", (DoesntOrDont)second, " fit the lock.";
+    MSG_UNLOCK_ALREADY_UNLOCKED:
+      print_ret (CTheyreOrIts)noun, " already unlocked.";
+    MSG_UNLOCK_KEY_DOESNT_FIT:
+      print_ret (The)second, " ", (DoesntOrDont)second, " fit the lock.";
+    MSG_AUTO_TAKE_NOT_HELD:
+      print_ret "You don't have ", (the)p_arg_1, ".";
+    MSG_DIG_NO_USE:
+      if (location has underwater)
+        "Underwater? Really?";
+      print "The ";
+      if (location has indoors)
+        print "floor";
+      else
+        print "ground";
+      " is too hard to dig here.";
+    MSG_JUMP:
+      if (location has underwater)
+        "Underwater? Really?";
+      "You try jumping on the spot, but the spot keeps moving out of the way.";
+    MSG_LISTEN_DEFAULT:
+      if (suit has worn)
+        "You can't hear anything through your diving suit.";
+      if (location has indoors)
+        "All is quiet.";
+      "You can hear the rustling of leaves in the forest and the tweeting of birds.";
+    MSG_SMELL_DEFAULT:
+      if (suit has worn)
+        "You can smell the rubber of your diving suit.";
+      if (location has indoors)
+        "You can't smell anything in particular.";
+      "You smell the fresh air of the French countryside.";
+    MSG_TAKE_SCENERY:
+      "That would require divine intervention.";
+    MSG_TAKE_STATIC:
+      "That would require the strength of Samson.";
+    MSG_WEAR_ALREADY_WORN:
+      "You're already wearing ", (ItOrThem)noun, ".";
+    MSG_WEAR_DEFAULT:
+      "You're now wearing ", (the)noun, ".";
+  }
+  p_arg_1 = p_arg_2;
+];
+
+Include "puny.h";
+
+!========================================
+! Initialisation
+!========================================
+[ Initialise;
+  location = room01;
+  lookmode = 2;
+  move cassock to player;
+  no_implicit_actions = true;
+  genesis = random(8);
+  exodus = random(1, 2, 3, 4, 6, 7);
+  leviticus = random(1, 2, 3, 4, 7);
+  numbers = random(1, 2, 3, 5, 6, 7, 9);
+  deuteronomy = random(1, 2, 3, 6, 7);
+  combination->1 = digits->genesis;
+  combination->2 = digits->exodus;
+  combination->3 = digits->leviticus;
+  combination->4 = digits->numbers;
+  combination->5 = digits->deuteronomy;
+  StartDaemon(candle);
+  player.description = "Your name is Jean Rousseau. You are tall, fair skinned and frail, but God gives you strength. Faith runs in your family. Your parents named you Jean, because it means 'God is gracious'. You are now training to be a priest.";
+  "The stories about the Ark of the Covenant are well known, but its current location is a mystery. According to French author Louis Charpentier, the Ark was taken to the Chartres Cathedral by the Knights Templar, but no one outside the cathedral has ever seen it. There may be a good reason for this.^^You were raised in a small village about 100 km from Chartres Cathedral. According to local legend, the Ark was secretly transferred from the cathedral to your village's church, where it would be safe from tourists and treasure hunters.^^Prior to World War I, the Ark was hidden in the local forest so that it would be safe from the invading German army and it has remained there until this day.^^The priest that hid the Ark recently passed away, taking the location of the Ark to his grave. The Church Council has decided that it's time to recover the Ark. As you are now a seminarian (or trainee priest), the Church Council has asked you to return to your local village, use your local knowledge to find the Ark and return it to its rightful place on the altar in the local church.^";
+];
+
+!========================================
+! Classes
+!========================================
+Class OpenableContainer
+with
+  invent
+  [;
+    if (inventory_stage == 2 && (self hasnt open || children(self) == 0))
+      rtrue;
+  ],
+has container openable;
+
+Class OpenContainer
+with
+  invent
+  [;
+    if (inventory_stage == 2 && children(self) == 0)
+      rtrue;
+  ],
+has container open;
+
+!========================================
+! Inventory
+!========================================
+!----------------------------------------
+! Cassock
+!----------------------------------------
+Object cassock "cassock"
+with
+  article YOUR,
+  parse_name
+  [ i;
+    while (NextWord() == 'cassock' or 'long' or 'black' or 'ankle-length' or 'ankle' or 'length' or 'cloak' or 'canonical' or 'costume' or 'garment')
+      i++;
+    return i;
+  ],
+  description "It's a long, black, ankle-length garment, buttoned down the front with a clerical collar around the neck. It's part of the canonical costume of the clergy, though not a liturgical vestment.",
+  before
+  [;
+    Disrobe:
+      if (self hasnt worn)
+        "You're not wearing it.";
+      if (location ~= room21)
+        "A seminarian should not be seen wandering around in his underwear. What would the parishioners think?";
+    Wear:
+      if (self has worn)
+        "You're already wearing it.";
+      if (suit has worn)
+        "Your cassock won't fit over the diving suit, so you'll have to remove the diving suit first.";
+  ],
+  after
+  [;
+    Disrobe:
+      move self to location;
+      move underwear to player;
+      "You look around to make sure no one is looking, then remove your cassock and drop it on the ground.";
+    Wear:
+      remove underwear;
+      "You feel much better now that you're wearing your normal attire.";
+  ],
+  add_to_scope collar,
+has clothing worn;
+
+!----------------------------------------
+! Clerical collar
+!----------------------------------------
+Object collar "clerical collar"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'clerical' or 'collar' or 'neck' or 'dog' or 'stiff' or 'white' or 'ring')
+      i++;
+    return i;
+  ],
+  description "The clerical collar is a stiff white ring around the neck of your cassock. Most of it is hidden by the cassock so that only a small section is visible beneath the chin. It's colloquially known as a 'dog collar', but you think that's a disrespectful term.",
+  before
+  [;
+    Disrobe, Take:
+      "It's attached to your cassock.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Underwear
+!----------------------------------------
+Object underwear "underwear"
+with
+  article YOUR,
+  parse_name
+  [ i;
+    while (NextWord() == 'underwear' or 'white' or 'cotton' or 'singlet' or 'underpants//p' or 'baggy' or 'y-fronts//p')
+      i++;
+    return i;
+  ],
+  description "Your underwear consists of a white cotton singlet and baggy Y-fronts.",
+  before
+  [;
+    Disrobe:
+      "When Adam was naked in the Garden of Eden, he was not ashamed, but you are not Adam, so keep your underwear on.";
+  ],
+has clothing worn;
+
+!========================================
+! Room 1: Outside Church
+!========================================
+Object room01 "Outside Church"
+with
+  description "You're outside the church where you've been doing your training to enter the priesthood. The steeple at the west end of the church casts a shadow over the church grounds. There are paths to the north, south and west, or you can enter the church to the east.",
+  n_to room25,
+  s_to room05,
+  e_to room06,
+  w_to room02,
+  u_to
+  [;
+    if (ladder in self)
+      "You clamber up the ladder, but it's not high enough to reach the top of the steeple, so you climb back down again. You'll have to find another way to get up there.";
+    else
+      print_ret (string)NEED_LADDER;
+  ],
+  in_to room06,
+  before
+  [;
+    Hint:
+      if (room08 hasnt visited)
+        "The steeple looks like it would have a good view over the entire area.";
+      if (room02 hasnt visited || room05 hasnt visited || room25 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!----------------------------------------
+! Church (floating object)
+!----------------------------------------
+Object church "church"
+with
+  name 'old' 'stone' 'building' 'church',
+  description "The church is an old stone building, probably hundreds of years old. It's quite small by church standards, but still one of the larger buildings in the village.",
+  before
+  [;
+    Enter:
+      if (self in room01)
+        <<Go FAKE_E_OBJ>>;
+      if (self in room02)
+        print_ret (string)TOO_FAR_AWAY;
+      "You're already in the church.";
+  ],
+  found_in
+  [;
+    if (location == room01 or room02 or room06 or room07 or room08 or room09 or room10 or room11 or room12)
+      rtrue;
+  ],
+has scenery;
+
+!----------------------------------------
+! Steeple (floating object)
+!----------------------------------------
+Object "steeple"
+with
+  name 'steeple' 'stone' 'stones//p' 'tower',
+  description
+  [;
+    if (self in room08)
+      "The steeple is quite high above the ground, so be careful not to fall. On closer inspection you see an engraving in one of the stones.";
+    else
+      "The stone steeple towers overhead at the western end of the church. There is no obvious way of climbing it from outside the church.";
+  ],
+  before
+  [;
+    Climb, Enter:
+      if (self in room08)
+        "You're already in the steeple.";
+      if (self in room01)
+        "You would need an extremely tall ladder to climb the steeple.";
+      print_ret (string)TOO_FAR_AWAY;
+    Touch:
+      if (self in room08)
+        "The stone is cold to the touch. As you run your fingers over the stone, you feel an engraving.";
+      print_ret (string)TOO_FAR_AWAY;
+  ],
+  found_in room01 room02 room08,
+has scenery;
+
+!----------------------------------------
+! Shadow over church grounds (floating object)
+!----------------------------------------
+Object "shadow over church grounds"
+with
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'shadow' or 'over' or 'church' or 'ground' or 'grounds//p')
+    {
+      i++;
+      if (nw == 'church' && church in location)
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description "The church's steeple casts a shadow over the church grounds.",
+  found_in room01 room02,
+has scenery;
+
+!========================================
+! Room 2: Path
+!========================================
+Object room02 "Path"
+with
+  description "You're on a gravel path that runs east to west between the church and the vicarage. You can leave the church grounds through the gate to the south.",
+  s_to gate,
+  e_to room01,
+  w_to room13,
+  before
+  [;
+    Hint:
+      if (room03 hasnt visited || room13 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!----------------------------------------
+! Path
+!----------------------------------------
+Object "path" room02
+with
+  name 'gravel' 'path' 'paths//p',
+  description "The main path goes east and west, with a branch going through the gate to the south.",
+has scenery;
+
+!----------------------------------------
+! Vicarage (floating object)
+!----------------------------------------
+Object "vicarage"
+with
+  name 'vicarage' 'stone' 'building' 'residence',
+  description "The vicarage is the residence of the vicar. This particular vicarage is a stone building, but looks to have been built more recently than the church.",
+  before
+  [;
+    Enter:
+      if (self in room02)
+        print_ret (string)TOO_FAR_AWAY;
+      if (self in room15)
+        <<Go FAKE_E_OBJ>>;
+      "There's no entry on this side of the building.";
+  ],
+  found_in
+  [;
+    if (location == room02 or room13 or room14 or room15 or room19)
+      rtrue;
+  ],
+has scenery;
+
+!----------------------------------------
+! Billboard (floating object)
+!----------------------------------------
+Object "billboard"
+with
+  name 'billboard' 'bill' 'board',
+  description
+  [;
+    print "It's a wooden billboard located just inside the gate. ";
+    if (self in room02)
+      "You can only see the back of it from here. If you want to see the front, you'll have to go outside the gate.";
+    else
+      "There's a notice glued to the billboard.";
+  ],
+  before
+  [;
+    Read:
+    if (self in room03 && billboard_notice hasnt general)
+      "There's nothing written on the billboard, but there's something written on the notice.";
+  ],
+  found_in room02 room03,
+has static;
+
+!----------------------------------------
+! Gate (floating object)
+!----------------------------------------
+Object gate "gate"
+with
+  name 'small' 'wrought' 'iron' 'gate',
+  description
+  [;
+    "It's a small wrought iron gate that's currently ", (OpenOrClosed)self, ".";
+  ],
+  door_dir
+  [;
+    if (self in room02)
+      return s_to;
+    else
+      return n_to;
+  ],
+  door_to
+  [;
+    if (self in room02)
+      return room03;
+    else
+      return room02;
+  ],
+  found_in room02 room03,
+has door openable scenery;
+
+!========================================
+! Room 3: Road
+!========================================
+Object room03 "Road"
+with
+  description "You're on the road south of the church gate. There are some roadworks underway, but there's no one around at the moment. Everything is in disarray and the workers have left lots of tools and equipment lying around. The road continues east and west through the forest.",
+  n_to gate,
+  s_to FOREST_IS_TOO_DENSE,
+  e_to "That direction leads to the village, but you have no need to visit the village at the moment. You're sure that your goal is somewhere in the church grounds or the surrounding forest.",
+  w_to room04,
+  before
+  [;
+    Dig:
+      if (noun == nothing)
+        <<Dig road_dirt>>;
+    Hint:
+      if (shovel in nothing)
+        "I wonder what's in the trench.";
+      if (shovel hasnt moved || hammer hasnt moved)
+        "Any stray tools may come in handy elsewhere.";
+      if (billboard_notice hasnt general)
+        "You could try reading the notice on the billboard.";
+      if (room04 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!----------------------------------------
+! Dirt road
+!----------------------------------------
+Object "dirt road" room03
+with
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'dirt' or 'road')
+    {
+      i++;
+      if (nw == 'dirt')
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description "This is the dirt road that heads east to the village. There are currently some roadworks going on, but you have no idea what they're for. The workers have started digging a trench, so maybe it has something to do with drainage or some of those new fangled services, like telephone or electricity.",
+has scenery;
+
+!----------------------------------------
+! Village (floating object)
+!----------------------------------------
+Object "village"
+with
+  name 'village',
+  description "The village is at the end of the road to the east, but you can't see it from here because it's obscured by the trees.",
+  found_in room03 room04,
+has scenery;
+
+!----------------------------------------
+! Roadworks
+!----------------------------------------
+Object "roadworks" room03
+with
+  article SOME,
+  name 'roadwork' 'roadworks//p',
+  description "They must have only started recently, as there is no sign of anything significant, other than a trench at the side of the road and a pile of dirt.",
+has scenery;
+
+!----------------------------------------
+! Tools
+!----------------------------------------
+Object "tools" room03
+with
+  name 'equipment' 'tool' 'tools//p',
+  description "They're just miscellaneous bits and pieces that are probably useful to a road worker, but of no use to you.",
+has pluralname scenery;
+
+!----------------------------------------
+! Billboard notice
+!----------------------------------------
+Object billboard_notice "notice" room03
+with
+  name 'notice',
+  description
+  [;
+    print "It's the last notice that Father Matisse glued to the billboard before he passed away. He used to paste a new one every few weeks.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      "The notice says, 'Today's Weather Forecast: God reigns and Son shines'.^^You've got to hand it to Father Matisse. He had a keen sense of humour.";
+    Take:
+      "It's glued down, remember.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Trench
+!----------------------------------------
+Object trench "trench" room03
+class OpenContainer
+with
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'trench' or 'ditch' or 'side' or 'of' or 'road')
+    {
+      i++;
+      if (nw == 'road')
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description
+  [;
+    if (shovel in nothing)
+      move shovel to self;
+    print "You assume that it's a newly-started trench, as it's not very deep. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Dig:
+      if (second == nothing && shovel in player)
+      {
+        print "(with the shovel)^";
+        second = shovel;
+      }
+      if (second == nothing)
+        print_ret (string)WOULD_NOT_BE_PROPER;
+      if (second ~= shovel)
+        print_ret (string)CANT_DIG_ANYTHING, (ThatOrThose)second, ".";
+      "You sincerely doubt that you will find the Ark of the Covenant by digging in the trench.";
+  ],
+has container open static;
+
+!----------------------------------------
+! Shovel
+!----------------------------------------
+Object shovel "shovel"
+with
+  name 'shovel' 'spade',
+  description "It's a well-worn, long-handled shovel that's used for digging holes and shovelling earth. The Lord can move heaven and earth, but this can only move earth.",
+has;
+
+!----------------------------------------
+! Pile of dirt
+!----------------------------------------
+Object road_dirt "pile of dirt" room03
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'pile' or 'of' or 'dirt' or 'earth' or 'soil')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "This is the dirt that's been shovelled out of the trench.";
+    if (self has general)
+      print " It's been disturbed from where you were digging it earlier.";
+    "";
+  ],
+  before
+  [;
+    Dig:
+      if (second == nothing && shovel in player)
+      {
+        print "(with the shovel)^";
+        second = shovel;
+      }
+      if (second == nothing)
+        print_ret (string)WOULD_NOT_BE_PROPER;
+      if (second ~= shovel)
+        print_ret (string)CANT_DIG_ANYTHING, (ThatOrThose)second, ".";
+      if (self has general)
+        "You've already dug into the pile of dirt. You're not likely to find anything else.";
+      give self general;
+      print "You dig into the pile of dirt, but all you find is more dirt.";
+      if (ark hasnt moved)
+        print " It's clear that you're not going to find the Ark of the Covenant in there.";
+      "";
+  ],
+has static;
+
+!----------------------------------------
+! Sledge hammer
+!----------------------------------------
+Object hammer "sledge hammer" room03
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'sledge' or 'hammer' or 'sledgehammer' or 'heavy' or 'iron' or 'head' or 'long' or 'wooden' or 'handle')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The sledge hammer has a heavy iron head and a long wooden handle. This combination makes it good for breaking big rocks into little rocks.";
+    if (self hasnt general)
+    {
+      give self general;
+      print " Did you know that 'sledge' is derived from the old English '", (string)SLAEGAN, "', which means 'to strike violently'. No? Well, now you do.";
+    }
+    "";
+  ],
+has;
+
+!========================================
+! Room 4: End of Road
+!========================================
+Object room04 "End of Road"
+with
+  description "You're at the end of the road. The parishioners use this area as a parking lot when they come to church on a Sunday, but there are no cars or carriages here today, as it's not a Sunday. The only way out of here is back east through the forest.",
+  n_to "If you want to get back into the church grounds, you'll have to use the gate back to the east.",
+  s_to FOREST_IS_TOO_DENSE,
+  e_to room03,
+  w_to FOREST_IS_TOO_DENSE,
+  before
+  [;
+    Hint:
+      if (ark hasnt moved)
+        "The Ark isn't likely to be hidden here. Try the church grounds or the forest.";
+  ],
+has light;
+
+!----------------------------------------
+! End of road
+!----------------------------------------
+Object "end of the road" room04
+with
+  article THE,
+  parse_name
+  [ i;
+    while (NextWord() == 'end' or 'of' or 'road' or 'parking' or 'lot' or 'bare' or 'earth')
+      i++;
+    return i;
+  ],
+  description "The end of the road is bare earth from where the grass has been churned up by cars and carriages.",
+has scenery;
+
+!----------------------------------------
+! Cars or carriages
+!----------------------------------------
+Object "cars or carriages" room04
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'automobile' or 'automobiles//p' or 'car' or 'cars//p' or 'carriage' or 'carriages//p' or 'vehicle' or 'vehicles//p')
+      i++;
+    return i;
+  ],
+  description "There are no vehicles here today, as it's not a Sunday.",
+  before
+  [;
+    Take:
+      "There aren't any and, even if there were, you don't have the strength of Samson, so you wouldn't be able to pick them up.";
+  ],
+has pluralname scenery;
+
+!========================================
+! Room 5: Graveyard
+!========================================
+Object room05 "Graveyard"
+with
+  description "You're in the church's graveyard. It's full of very old graves, so it's not exactly the cheeriest place to be. You can leave by going back to the north.",
+  n_to room01,
+  before
+  [;
+    Dig:
+      if (noun == nothing && earth in self)
+        <<Dig earth>>;
+    Hint:
+      if (earth in self)
+        "The earth is freshly turned, so it's probably soft.";
+      if (coffin hasnt open)
+        "Take a look in the coffin.";
+      if (silver_key hasnt moved)
+        "Why would anyone bury a key in a coffin, unless they were trying to hide it?";
+  ],
+has light;
+
+!----------------------------------------
+! Graveyard
+!----------------------------------------
+Object "graveyard" room05
+with
+  name 'graveyard' 'grave' 'graves//p' 'yard',
+  description "The graveyard is as old as the church. Some of the gravestones are hundreds of years old.",
+has scenery;
+
+!----------------------------------------
+! Gravestones
+!----------------------------------------
+Object "gravestones" room05
+with
+  name 'gravestone' 'gravestones//p' 'stone' 'stones//p',
+  description
+  [;
+    print "Most of the gravestones are very old and covered in moss. The one in front of the ";
+    if (earth in location)
+      print "freshly-turned earth";
+    else
+      print "freshly-dug grave";
+    " is for Father Matisse.";
+  ],
+  before
+  [;
+    Read:
+      print "You don't have time to read all the gravestones, but the one in front of the ";
+      if (earth in location)
+        print "freshly-turned earth";
+      else
+        print "freshly-dug grave";
+      " says (in French), 'Here lies Father ", (string)ANDRE, " Matisse. 24 Sep 1850 - 18 Apr 1933. Beloved priest of the local parish. He will dwell in the house of the Lord.'";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Freshly-turned earth
+!----------------------------------------
+Object earth "freshly-turned earth" room05
+with
+  article SOME,
+  parse_name
+  [ i;
+    while (NextWord() == 'freshly-turned' or 'freshly' or 'turned' or 'earth' or 'soil' or 'dirt')
+      i++;
+    return i;
+  ],
+  description "Most of the graves are covered in grass, but this one is covered in freshly-turned earth, indicating that it's fairly recent.",
+  before
+  [;
+    Dig:
+      if (second == nothing && shovel in player)
+      {
+        print "(with the shovel)^";
+        second = shovel;
+      }
+      if (second == nothing)
+        print_ret (string)WOULD_NOT_BE_PROPER;
+      if (second ~= shovel)
+        print_ret (string)CANT_DIG_ANYTHING, (ThatOrThose)second, ".";
+      remove self;
+      move grave_dirt to location;
+      move grave to location;
+      "You dig into the freshly-turned earth until you hit something solid. You tap on it with the shovel and deduce that the hollow echo sounds like a coffin. Well, what else is it likely to be in a graveyard? You continue clearing the dirt until you have a freshly dug grave.";
+  ],
+has static;
+
+!----------------------------------------
+! Pile of dirt
+!----------------------------------------
+Object grave_dirt "pile of dirt"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'pile' or 'of' or 'dirt' or 'earth' or 'soil')
+      i++;
+    return i;
+  ],
+  description "This is the dirt that you dug out of the grave.",
+  before
+  [;
+    Dig:
+      if (second == nothing && shovel in player)
+      {
+        print "(with the shovel)^";
+        second = shovel;
+      }
+      if (second == nothing)
+        print_ret (string)WOULD_NOT_BE_PROPER;
+      if (second ~= shovel)
+        print_ret (string)CANT_DIG_ANYTHING, (ThatOrThose)second, ".";
+      "You've already dug this dirt out of the grave. There's no point digging it again.";
+  ],
+has static;
+
+!----------------------------------------
+! Freshly-dug grave
+!----------------------------------------
+Object grave "freshly-dug grave"
+class OpenContainer
+with
+  name 'freshly-dug' 'freshly' 'dug' 'grave',
+  description
+  [;
+    print "This is the grave that you recently dug. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Fill:
+      if (coffin has open)
+        "You'll need to close the coffin first.";
+      if (shovel notin player)
+        "You'll need the shovel.";
+      remove self;
+      remove grave_dirt;
+      move earth to location;
+      "You shovel the pile of dirt back into the grave, then say a little prayer for Father Matisse. May he rest in peace.";
+  ],
+has container open static;
+
+!----------------------------------------
+! Coffin
+!----------------------------------------
+Object coffin "coffin" grave
+class OpenableContainer
+with
+  name 'cherry' 'wood' 'coffin' 'lid',
+  description
+  [;
+    print "It's a beautiful cherry wood coffin with brass fittings. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Take:
+      "It would have taken four strong men to lower the coffin into the grave. A weakling like you is not likely to lift it back out.";
+  ],
+  add_to_scope brass_fittings,
+has container openable static;
+
+!----------------------------------------
+! Brass fittings
+!----------------------------------------
+Object brass_fittings "brass fittings"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'brass' or 'fitting' or 'fittings//p' or 'handle' or 'handles//p' or 'unadorned' or 'cross')
+      i++;
+    return i;
+  ],
+  description "They are very simple brass fittings reminiscent of the coffin of a pauper. They consist of four brass handles on the side of the coffin and an unadorned cross on the lid. The brass is still shiny, indicating that the coffin was only buried recently.",
+has pluralname scenery;
+
+!----------------------------------------
+! Body
+!----------------------------------------
+Object "body" coffin
+with
+  name 'body' 'corpse' 'father' 'matisse',
+  description "It's the body of Father Matisse. He's the one who hid the Ark of the Covenant before World War I. There are minimal signs of decay, so the body must have been buried quite recently.",
+  before
+  [;
+    Search:
+      "Ooh, gross. No thank you.";
+    Smell:
+      "There may be minimal decay, but there is maximal stench. Pew.";
+    Take:
+      "Show some respect for the dead. Leave poor old Father Matisse to rest in peace.";
+  ],
+has animate;
+
+!----------------------------------------
+! Silver key
+!----------------------------------------
+Object silver_key "silver key" coffin
+with
+  name 'large' 'silver' 'key',
+  description
+  [;
+    print "It's a large silver key";
+    if (self hasnt moved)
+      ", but why would anyone bury a key with a body? Unless they were trying to hide it for some reason...";
+    if (self hasnt general)
+      ", but you have no idea what it opens.";
+    " that opens the wooden doors in the church.";
+  ],
+has;
+
+!========================================
+! Room 6: Nave of Church
+!========================================
+Object room06 "Nave of Church"
+with
+  description "You're in the nave. It stretches from the main entrance at the western end of the church to the transept at the east. Rows of pews are located at each side of the central aisle. There's also a door to the north.",
+  n_to steeple_door,
+  e_to room09,
+  w_to room01,
+  out_to room01,
+  before
+  [;
+    Hint:
+      if (silver_key hasnt moved)
+        "You'll need to dig up a key to unlock that door.";
+      if (notice hasnt general)
+        "You could try reading the notice on the noticeboard.";
+      if (jokes.number < 12)
+        "You could try reading the jokes on the noticeboard.";
+      if (room07 hasnt visited || room09 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has indoors light;
+
+!----------------------------------------
+! Nave (floating object)
+!----------------------------------------
+Object "nave"
+with
+  name 'nave',
+  description "The nave is the central part of the church, stretching from the main entrance to the transept.",
+  found_in room06 room09,
+has scenery;
+
+!----------------------------------------
+! Entrance
+!----------------------------------------
+Object "entrance" room06
+with
+  name 'main' 'entrance' 'daylight',
+  description "Daylight streams in from the entrance to the west.",
+has scenery;
+
+!----------------------------------------
+! Aisle
+!----------------------------------------
+Object "aisle" room06
+with
+  article AN,
+  name 'aisle',
+  description "The aisle runs down the central part of the church separating the pews on each side.",
+has scenery;
+
+!----------------------------------------
+! Steeple door (floating object)
+!----------------------------------------
+Object steeple_door "wooden door"
+with
+  name 'heavy' 'wooden' 'door',
+  description
+  [;
+    "It's a heavy wooden door that's currently ", (OpenOrClosed)self, ".";
+  ],
+  door_dir
+  [;
+    if (self in room06)
+      return n_to;
+    else
+      return s_to;
+  ],
+  door_to
+  [;
+    if (self in room06)
+      return room07;
+    else
+      return room06;
+  ],
+  after
+  [;
+    Unlock:
+      give silver_key general;
+  ],
+  with_key silver_key,
+  found_in room06 room07,
+has door lockable locked openable scenery;
+
+!----------------------------------------
+! Noticeboard
+!----------------------------------------
+Object "noticeboard" room06
+with
+  name 'noticeboard' 'notice' 'board',
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'noticeboard' or 'notice' or 'board')
+    {
+      i++;
+      if (nw == 'notice')
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description "The noticeboard is just inside the main entrance. This is used to place church notices and classifieds. At the moment, it only has one notice and a list of jokes.",
+  before
+  [;
+    Read:
+      "There's nothing written on the noticeboard itself, but you can read the notice or the jokes.";
+  ],
+has static;
+
+!----------------------------------------
+! Notice
+!----------------------------------------
+Object notice "notice" room06
+with
+  name 'notice',
+  description
+  [;
+    print "It's a typewritten notice.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Seven days without prayer makes one weak'. That sounds like one of Father Matisse's puns.";
+    Take:
+      "You should leave the notice pinned to the noticeboard for the parishioners to enjoy.";
+  ],
+has scenery;
+
+!----------------------------------------
+! List of jokes
+!----------------------------------------
+Object jokes "list of jokes" room06
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'list' or 'of' or 'joke' or 'jokes//p' or 'riddle' or 'riddles//p')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "It's a hand-written list of a dozen jokes in Father Matisse's hand writing. ";
+    if (self.number == 0)
+      "Perhaps you should read one to cheer yourself up.";
+    if (self.number < 12)
+      "Perhaps you should read another one.";
+    "You've read them all, now.";
+  ],
+  before
+  [;
+    Read:
+     if (self.number == 12)
+       "You've read them all.";
+     self.number++;
+     switch (self.number)
+     {
+       1: print "Q: Where was Solomon's Temple located?^A: On the side of his head.";
+       2: print "Q: What sort of lights were on Noah's Ark?^A: Flood lights.";
+       3: print "Q: How do we know Peter was a rich fisherman?^A: By his net income.";
+       4: print "Q: If Moses were alive today, why would he be considered a remarkable man?^A: Because he would be several thousand years old.";
+       5: print "Q: Who was the fastest man in the Bible?^A: Adam, because he was first in the human race.";
+       6: print "Q: Why did the hawk sit on the church steeple?^A: Because it was a bird of pray.";
+       7: print "Q: What is the most religious cheese?^A: Swiss cheese, because it's holy.";
+       8: print "Q: Why didn't they play cards on the Noah's ark?^A: Because Noah was standing on the deck.";
+       9: print "Q: Why did God make man before He made woman?^A: Because He didn't want any advice on how to do it.";
+       10: print "Q: What does God call his nose?^A: God knows.";
+       11: print "Q: Who was the greatest comedian in the Bible?^A: Samson, because he brought the house down.";
+       12: print "Q: When was medicine first mentioned in the Bible?^A: When God gave Moses two tablets.";
+     }
+     if (self.number < 12)
+       "^^Enter G (for AGAIN) if you'd like to read another joke.";
+     "^^Speaking of Moses, this reminds you that you have a mission to complete, so you shouldn't be wasting time reading jokes.";
+    Take:
+      "You should leave the jokes pinned to the noticeboard for the parishioners to enjoy.";
+  ],
+  number 0,
+has scenery;
+
+!----------------------------------------
+! Stoup
+!----------------------------------------
+Object "stone stoup" room06
+with
+  name 'solid' 'stone' 'stoup',
+  description "The stoup is located inside the entrance of the church. This tradition comes from the Roman basilicas that had a fountain for washing in front of the entrance. However, this stoup has a bowl of holy water and one should not wash in the holy water.",
+has static;
+
+!----------------------------------------
+! Bowl
+!----------------------------------------
+Object bowl "bowl" room06
+class OpenContainer
+with
+  name 'bowl' 'hemisphere' 'hemispherical' 'depression',
+  description
+  [;
+    print "The bowl is a hemispherical depression carved into the solid stone of the stoup. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Receive:
+      "You must not pollute the holy water.";
+    Take:
+      "The bowl is carved into the solid stone of the stoup, so you can't take it.";
+  ],
+has container open scenery;
+
+!----------------------------------------
+! Holy water
+!----------------------------------------
+Object "holy water" bowl
+with
+  article SOME,
+  name 'holy' 'water',
+  description "The holy water is used for baptisms and religious cleansing of the soul.",
+  before
+  [;
+    Drink:
+      "There isn't much holy water in the bowl. If you were to drink it, there would be none left for others to cleanse their soul.";
+    Take:
+      "The holy water trickles through your fingers, but you do feel cleansed.";
+  ],
+has static;
+
+!----------------------------------------
+! Pews
+!----------------------------------------
+Object pews "pews" room06
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'row' or 'rows//p' or 'of' or 'pew' or 'pews//p')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The pews are located on each side of the central aisle that goes down the centre of the nave. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Enter:
+      if (verb_word == 'lie')
+        "Surely you can find somewhere more comfortable than a pew if you want to lie down.";
+      if (verb_word == 'stand')
+        "You shouldn't put your dirty feet on the pews, as other people will want to sit on them.";
+      "You sit on one of the pews, bow your head and say a brief prayer, then stand up again.";
+    LookUnder:
+      "It's not unusual to find a dropped prayer book under the pews, but not today.";
+  ],
+has pluralname scenery supporter;
+
+!========================================
+! Room 7: Bottom of Stone Steps
+!========================================
+Object room07 "Bottom of Stone Steps"
+with
+  description "You're at the bottom of some stone steps that spiral around the inner wall of the church to the daylight above. If you don't want to climb the steps, you can return to the nave through the wooden door to the south.",
+  s_to steeple_door,
+  u_to room08,
+  before
+  [;
+    Hint:
+      if (room08 hasnt visited)
+        "Climb the steps to get closer to God.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Stone steps (floating object)
+!----------------------------------------
+Object "stone steps"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'spiral' or 'stone' or 'step' or 'steps//p' or 'stair' or 'stairs//p' or 'stairway' or 'staircase')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The stone steps form a spiral staircase that goes ";
+    if (self in room07)
+      "up to the steeple.";
+    else
+      "down to the ground floor of the church.";
+  ],
+  before
+  [;
+    Climb, Enter:
+      if (self in room07)
+        <<Go FAKE_U_OBJ>>;
+      else
+        <<Go FAKE_D_OBJ>>;
+  ],
+  found_in room07 room08,
+has pluralname scenery;
+
+!========================================
+! Room 8: Steeple
+!========================================
+Object room08 "Steeple"
+with
+  description "You're in the church steeple. It provides a grand view over the forest to the north, the graveyard to the south and the roof of the vicarage to the west. The steeple itself is made from local stone and warrants a closer inspection. The only exit is back down the steps.",
+  u_to "Now that you're in the steeple, you might be closer to God, but that doesn't mean you can ascend into heaven.",
+  d_to room07,
+  cant_go "If you were to step off the edge of the steeple, you would tumble to the ground below. You're too young to visit St Peter, so you decide to leave your visit to the Pearly Gates until another time.",
+  before
+  [;
+    Hint:
+      if (engraving hasnt general)
+        "Reading things engraved in stone may prove beneficial.";
+      if (room18 hasnt visited)
+        "Make sure you examine all the surroundings, especially the roof of the vicarage.";
+  ],
+has light;
+
+!----------------------------------------
+! Forest
+!----------------------------------------
+Object "forest" room08
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'forest' or 'common' or 'oak' or 'scots' or 'pine' or 'birch' or 'tree' or 'trees//p')
+      i++;
+    return i;
+  ],
+  description "You can't distinguish the individual trees from this distance, but you recognise common oak, Scots pine and birch trees.",
+has scenery;
+
+!----------------------------------------
+! Graveyard
+!----------------------------------------
+Object "graveyard" room08
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'graveyard' or 'gravestone' or 'gravestones//p' or 'green' or 'lawn' or 'bare' or 'earth')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The graveyard looks quite beautiful from up here. The gravestones are scattered across the green lawn apart from one ";
+    if (earth in room05)
+      "patch of bare earth.";
+    else
+      "open grave.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Roof of the vicarage
+!----------------------------------------
+Object "roof of the vicarage" room08
+with
+  name 'roof' 'of' 'vicarage' 'slate',
+  description "The roof of the vicarage appears to be made of slate. You can see something painted on it, but you need to get much closer to see what it says.",
+  before
+  [;
+    Read:
+      print_ret (string)TOO_FAR_AWAY;
+  ],
+has scenery;
+
+!----------------------------------------
+! Engraving
+!----------------------------------------
+Object engraving "engraving" room08
+with
+  article AN,
+  name 'engraving',
+  description
+  [;
+    print "There's an engraving in the stone of the steeple.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Exodus ", (string)exodus_passage-->exodus, "'.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Diving suit
+!----------------------------------------
+Object suit "diving suit" room08
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'waterproof' or 'diving' or 'suit' or 'solid' or 'rubber' or 'tan' or 'twill' or 'helmet' or 'rebreather')
+      i++;
+    return i;
+  ],
+  description "It's a very cumbersome waterproof suit made from a thin sheet of solid rubber laminated between layers of tan twill. This particular suit has a helmet and rebreather for short stints underwater.",
+  before
+  [;
+    Disrobe:
+      if (self hasnt worn)
+        "You're not wearing it.";
+      if (location has underwater)
+        "You can't remove the diving suit while you're in the water or you'll freeze ... or drown ... or both.";
+    Wear:
+      if (self has worn)
+        "You're already wearing it.";
+      if (location ~= room21)
+        "The diving suit is too heavy and cumbersome to wear while walking around on land. Wait until you need it.";
+      if (cassock has worn)
+        "You can't wear the diving suit over your cassock, so you'll have to remove your cassock first.";
+  ],
+  after
+  [;
+    Disrobe:
+      move self to location;
+      move underwear to player;
+      "You remove the diving suit and drop it on the ground. You're now wearing only your underwear. You'd better get dressed before heading back.";
+    Wear:
+      remove underwear;
+      "You put on the awkward diving suit and attach the helmet. You are now ready to venture into the pond.";
+  ],
+has clothing;
+
+!========================================
+! Room 9: Transept
+!========================================
+Object room09 "Transept"
+with
+  description "You're in the transept of the church. The transept branches off to the north and south to form the cross bar of the cross, but the northern transept has been closed off by a wooden door. The sanctuary is to the east and the nave is to the west.",
+  n_to transept_door,
+  s_to room12,
+  e_to room11,
+  w_to room06,
+  before
+  [;
+    Hint:
+      if (silver_key hasnt moved)
+        "You'll need to dig up a key to unlock that door.";
+      if (room10 hasnt visited || room11 hasnt visited || room12 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has indoors light;
+
+!----------------------------------------
+! Transept (floating object)
+!----------------------------------------
+Object "transept"
+with
+  name 'transept',
+  description "The transept is the crosswise part of the church that separates the nave from the sanctuary. It creates the cruciform shape that is so distinctive of Romanesque Christian church architecture.",
+  found_in room06 room09 room10 room12,
+has scenery;
+
+!----------------------------------------
+! Wooden door (floating object)
+!----------------------------------------
+Object transept_door "wooden door"
+with
+  name 'heavy' 'wooden' 'door',
+  description
+  [;
+    "It's a heavy wooden door that's currently ", (OpenOrClosed)self, ".";
+  ],
+  door_dir
+  [;
+    if (self in room09)
+      return n_to;
+    else
+      return s_to;
+  ],
+  door_to
+  [;
+    if (self in room09)
+      return room10;
+    else
+      return room09;
+  ],
+  after
+  [;
+    Unlock:
+      give silver_key general;
+  ],
+  with_key silver_key,
+  found_in room09 room10,
+has door lockable locked openable scenery;
+
+!========================================
+! Room 10: North Transept
+!========================================
+Object room10 "North Transept"
+with
+  description "You're in the north transept. In most churches, this would be open to the public, but this church has blocked it off with a wooden door to the south. As you're only a seminarian, this area would normally be off limits to you, but you can now see that it's full of holy relics. This might have been where the Ark of the Covenant was kept before it was hidden and this would explain why it's kept under lock and key.",
+  s_to transept_door,
+  before
+  [;
+    Hint:
+      if (crucifix hasnt moved)
+        "Why would anyone lock up a silver crucifix? Unless they were a vampire...";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Holy relics
+!----------------------------------------
+Object "holy relics" room10
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'holy' or 'relic' or 'relics//p' or 'painting' or 'paintings//p' or 'small' or 'statue' or 'statues//p' or 'knick' or 'knack' or 'knacks//p')
+      i++;
+    return i;
+  ],
+  description "The relics include paintings, small statues and various knick knacks. There doesn't appear to be anything of any great value, but they are interesting from a historical point of view.",
+  before
+  [;
+    Take:
+      print "The holy relics belong to the church, so you should leave them be.";
+      if (crucifix hasnt moved)
+        print " The crucifix is an exception. You're sure that belongs in the vicarage.";
+      "";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Crucifix
+!----------------------------------------
+Object crucifix "crucifix" room10
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'solid' or 'silver' or 'crucifix' or 'cross' or 'trefoil' or 'trefoils//p' or 'arm' or 'arms//p')
+      i++;
+    return i;
+  ],
+  description "It's a beautifully sculpted crucifix, about 15 cm long, with little trefoils at the end of each arm. It looks like it's made of solid silver.",
+  before
+  [;
+    Wear:
+      "It's too big to wear and doesn't have a chain. It looks like it came off a wall.";
+  ],
+has;
+
+!========================================
+! Room 11: Sanctuary
+!========================================
+Object room11 "Sanctuary"
+with
+  description "The sanctuary is at the head of the church. The rest of the church is back to the west.",
+  w_to room09,
+  before
+  [;
+    Hint:
+      if (message in nothing)
+        "The holy Bible contains the word of God, but it may also conceal the word of God.";
+      if (message hasnt general)
+        "Read the message.";
+      "Return the Ark to the altar.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Sanctuary (floating object)
+!----------------------------------------
+Object "sanctuary"
+with
+  name 'sanctuary',
+  description "Sanctuary means 'sacred place'. This part of the church contains lots of items that reflect that.",
+  found_in room09 room11,
+has scenery;
+
+!----------------------------------------
+! Altar
+!----------------------------------------
+Object altar "altar" room11
+with
+  article AN,
+  name 'altar' 'bench' 'bench-like' 'table',
+  description
+  [;
+    print "The altar is a bench-like table where the bread and wine are blessed during the Eucharist. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Receive:
+      if (noun == ark)
+      {
+        deadflag = 2;
+        "In your mind, you hear a choir of angels singing, ~Hallelujah! Hallelujah! Glory be to the Lord.~^^You have found the reproduction of the Ark of the Covenant and returned it to its rightful place on the altar in your local church. That will look good on your ", (string)RESUME, " when your training is complete. Congratulations!";
+      }
+  ],
+has static supporter;
+
+!----------------------------------------
+! Bread and wine
+!----------------------------------------
+Object "bread and wine" room11
+with
+  article THE,
+  parse_name
+  [ i;
+    while (NextWord() == 'bread' or 'and' or 'wine')
+      i++;
+    return i;
+  ],
+  description "The bread and wine are locked away until Mass.",
+  before
+  [;
+    if (action ~= ##Examine)
+      "The bread and wine are locked away.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Candle
+!----------------------------------------
+Object candle "candle" altar
+with
+  name 'beeswax' 'candle' 'wick',
+  description
+  [;
+    print "The beeswax candle symbolises the pure flesh of Christ received from His virgin mother. The wick signifies His soul and the flame represents His divinity";
+    if (self hasnt light)
+      print ", except that the candle isn't currently lit";
+    ".";
+  ],
+  before
+  [;
+    Burn:
+      if (self has light)
+        "It's already lit.";
+      if (second == nothing && matches in player)
+      {
+        print "(with the matches)^";
+        second = matches;
+      }
+      if (second == nothing)
+        "You'll have to tell me what to light it with.";
+      if (second ~= matches)
+        "You can't light the candle with ", (ThatOrThose)second, ".";
+      give self light;
+      StartDaemon(self);
+      print "The candle is now burning with a soft yellow glow.^";
+      if (location == thedark)
+        new_line;
+      rtrue;
+    Blow, Extinguish:
+      if (self hasnt light)
+        "It's already extinguished.";
+      give self ~light;
+      StopDaemon(self);
+      "You blow out the candle.";
+  ],
+  after
+  [;
+    Drop:
+      if (self has light)
+      {
+        give self ~light;
+        StopDaemon(self);
+        "The candle goes out when you drop it.";
+      }
+  ],
+  daemon
+  [;
+    if (real_location hasnt indoors && TestScope(self))
+    {
+      give self ~light;
+      StopDaemon(self);
+      "^The candle blows out.";
+    }
+  ],
+has light;
+
+!----------------------------------------
+! Lectern
+!----------------------------------------
+Object lectern "lectern" room11
+with
+  name 'lectern',
+  description
+  [;
+    print "The lectern is where the lessons from the Bible are read by the priest. This is something that you look forward to doing when you've finished your training. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Receive:
+      if (noun ~= bible)
+        "Please show some respect. The lectern is for the Bible, the whole Bible and nothing but the Bible, so help me God.";
+      remove message;
+      give bible ~moved;
+  ],
+has static supporter;
+
+!----------------------------------------
+! Bible
+!----------------------------------------
+Object bible "holy Bible" lectern
+with
+  name 'holy' 'bible',
+  description
+  [;
+    print "It's a leather-bound edition of the holy Bible. According to the title page, it's the 'Authorised King James Version'. ";
+    if (self hasnt moved)
+      print "You wonder why there's an English Bible in a French church. ";
+    "Luckily, you can read English.";
+  ],
+  before
+  [ nw;
+    Consult:
+      wn = consult_from;
+      nw = NextWord();
+      if (nw == 'contents')
+        "You browse the contents. The five books of Moses are Genesis, Exodus, Leviticus, Numbers and Deuteronomy. These are followed by Joshua, Judges, Ruth and so on. You know the sequence off by heart, so there's no point reading it all.";
+      if (nw == 'genesis' && carving has general)
+      {
+        nw = NextWord();
+        if (CompareString(genesis_passage-->genesis))
+        {
+          print (string)IT_SAYS;
+          switch (genesis)
+          {
+            1: "'And God said, Let the waters under the heaven be gathered together unto one place, and let the dry land appear: and it was so.'";
+            2: "'And of every living thing of all flesh, two of every sort shalt thou bring into the ark, to keep them alive with thee; they shall be male and female.'";
+            3: "'And Noah begat three sons, Shem, Ham, and Japheth.'";
+            4: "'And a river went out of Eden to water the garden; and from thence it was parted, and became into four heads.'";
+            5: "'And he took some of his brethren, even five men, and presented them unto Pharaoh.'";
+            6: "'And Leah said, God hath endued me with a good dowry; now will my husband dwell with me, because I have born him six sons: and she called his name Zebulun.'";
+            7: "'And it came to pass after seven days, that the waters of the flood were upon the earth.'";
+            8: "'And Abraham circumcised his son Isaac being eight days old, as God had commanded him.'";
+          }
+        }
+      }
+      if (nw == 'exodus' && engraving has general)
+      {
+        nw = NextWord();
+        if (CompareString(exodus_passage-->exodus))
+        {
+          print (string)IT_SAYS;
+          switch (exodus)
+          {
+            1: "'One law shall be to him that is homeborn, and unto the stranger that sojourneth among you.'";
+            2: "'And he gave unto Moses, when he had made an end of communing with him upon mount Sinai, two tables of testimony, tables of stone, written with the finger of God.'";
+            3: "'We will go three days' journey into the wilderness, and sacrifice to the Lord our God, as he shall command us.'";
+            4: "'And in the candlesticks shall be four bowls made like unto almonds, with their knops and their flowers.'";
+            6: "'Six days shalt thou labour, and do all thy work:'";
+            7: "'And thou shalt make the seven lamps thereof: and they shall light the lamps thereof, that they may give light over against it.'";
+          }
+        }
+      }
+      if (nw == 'leviticus' && painting has general)
+      {
+        nw = NextWord();
+        if (CompareString(leviticus_passage-->leviticus))
+        {
+          print (string)IT_SAYS;
+          switch (leviticus)
+          {
+            1: "'As the sin offering is, so is the trespass offering: there is one law for them: the priest that maketh atonement therewith shall have it.'";
+            2: "'And the Lord spake unto Moses after the death of the two sons of Aaron, when they offered before the Lord, and died;'";
+            3: "'And when ye shall come into the land, and shall have planted all manner of trees for food, then ye shall count the fruit thereof as uncircumcised: three years shall it be as uncircumcised unto you: it shall not be eaten of.'";
+            4: "'All fowls that creep, going upon all four, shall be an abomination unto you.'";
+            7: "'And the priest shall dip his finger in the blood, and sprinkle of the blood seven times before the Lord, before the vail of the sanctuary.'";
+          }
+        }
+      }
+      if (nw == 'numbers' && message has general)
+      {
+        nw = NextWord();
+        if (CompareString(numbers_passage-->numbers))
+        {
+          print (string)IT_SAYS;
+          switch (numbers)
+          {
+            1: "'One kid of the goats for a sin offering:'";
+            2: "'Make thee two trumpets of silver; of a whole piece shalt thou make them: that thou mayest use them for the calling of the assembly, and for the journeying of the camps.'";
+            3: "'And the Lord opened the mouth of the ass, and she said unto Balaam, What have I done unto thee, that thou hast smitten me these three times?'";
+            5: "'And they slew the kings of Midian, beside the rest of them that were slain; namely, Evi, and Rekem, and Zur, and Hur, and Reba, five kings of Midian: Balaam also the son of Beor they slew with the sword.'";
+            6: "'And of these cities which ye shall give six cities shall ye have for refuge.'";
+            7: "'He that toucheth the dead body of any man shall be unclean seven days.'";
+            9: "'And Moses commanded the children of Israel, saying, This is the land which ye shall inherit by lot, which the Lord commanded to give unto the nine tribes, and to the half tribe:'";
+          }
+        }
+      }
+      if (nw == 'deuteronomy' && writing has general)
+      {
+        nw = NextWord();
+        if (CompareString(deuteronomy_passage-->deuteronomy))
+        {
+          print (string)IT_SAYS;
+          switch (deuteronomy)
+          {
+            1: "'When a man hath taken a new wife, he shall not go out to war, neither shall he be charged with any business: but he shall be free at home one year, and shall cheer up his wife which he hath taken.'";
+            2: "'And we took at that time out of the hand of the two kings of the Amorites the land that was on this side Jordan, from the river of Arnon unto mount Hermon;'";
+            3: "'Wherefore I command thee, saying, Thou shalt separate three cities for thee.'";
+            6: "'Six days thou shalt labour, and do all thy work:'";
+            7: "'At the end of every seven years thou shalt make a release.'";
+          }
+        }
+      }
+      "You have no reason to read that now.";
+    Close, Open:
+      "There's no need to open and close the Bible each time you wish to read it.";
+    LookUnder:
+      if (self in lectern)
+        "There's something there, but you'll have to pick the Bible up to see it.";
+    Pull, Push:
+      if (self in lectern)
+        "If you were to push or pull the Bible off the lectern, it would fall on the floor. If you want to move it, you'll have to pick it up.";
+    Read:
+      "There's a lot to read. It would be quicker to just read the contents or a specific passage, e.g. LOOK UP CONTENTS IN BIBLE or READ GENESIS 1:1 IN BIBLE or CONSULT BIBLE ABOUT GENESIS 1:1.";
+  ],
+  after
+  [;
+    Take:
+      if (self hasnt moved)
+      {
+        move message to lectern;
+        "When you take the Bible, you see that it was covering a message scratched onto the lectern.";
+      }
+  ],
+has;
+
+!----------------------------------------
+! Message
+!----------------------------------------
+Object message "message"
+with
+  name 'scratching' 'scratched' 'message' 'varnish',
+  description
+  [;
+    print "It's a message scratched into the varnish of the lectern.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Numbers ", (string)numbers_passage-->numbers, "'.";
+  ],
+has static;
+
+!----------------------------------------
+! Pulpit
+!----------------------------------------
+Object "pulpit" room11
+with
+  name 'pulpit',
+  description "The pulpit is where the priest delivers his sermons. When you've finished your training, that will be one of your duties, but, for now, you are just an assistant.",
+has static;
+
+!========================================
+! Room 12: South Transept
+!========================================
+Object room12 "South Transept"
+with
+  description "This is the south transept. It's used as a store room and contains lots of religious items, but nothing of any great value. The exit is to the north.",
+  n_to room09,
+  before
+  [;
+    Hint:
+      if (matches hasnt moved)
+        "The matches may prove useful.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Store room
+!----------------------------------------
+Object "store room" room12
+with
+  name 'store' 'room' 'storeroom',
+  description "Just as the name implies, the store room is used to store things. It's full of religious items, such as prayer books.",
+has scenery;
+
+!----------------------------------------
+! Religious items
+!----------------------------------------
+Object "religious items" room12
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'religious' or 'item' or 'items//p' or 'miscellaneous' or 'bits//p' or 'pieces//p')
+      i++;
+    return i;
+  ],
+  description "The religious items include prayer books, brochures and miscellaneous bits and pieces. There doesn't appear to be anything of any value or anything that will help your quest.",
+  before
+  [;
+    Take:
+      "You have no need for all those miscellaneous bits and pieces.";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Brochures
+!----------------------------------------
+Object "brochures" room12
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'brochure' or 'brochures//p' or 'pamphlet' or 'pamphlets//p' or 'leaflet' or 'leaflets//p')
+      i++;
+    return i;
+  ],
+  description "There are various brochures, pamphlets and leaflets that are intended to teach the parishioners about the wisdom of God, how to be a good Christian, how the church works and things like that.",
+  before
+  [;
+    Read:
+      "You've read enough of these to last a lifetime. Maybe later.";
+    Take:
+      "Leave these for the parishioners when they come in on Sunday.";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Prayer books
+!----------------------------------------
+Object "prayer books" room12
+with
+  name 'prayer' 'book' 'books//p',
+  description "They're battered and dog-eared from years of use.",
+  before
+  [;
+    Read:
+      "You don't have time for that now.";
+    Take:
+      "You have no need for prayer books right now. That can wait until Sunday.";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Box of matches
+!----------------------------------------
+Object matches "box of matches" room12
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'box' or 'of' or 'match' or 'matches//p' or 'matchbox')
+      i++;
+    return i;
+  ],
+  description "The box contains enough matches to light many candles.",
+  before
+  [;
+    Burn:
+      print_ret "There's no need to light a match first. ", (string)IF_YOU_WANT_TO_LIGHT_SOMETHING;
+    Empty:
+      "Leave the matches in the box, otherwise you'll lose them.";
+    Open:
+      print_ret "There's no need to open the box of matches first. ", (string)IF_YOU_WANT_TO_LIGHT_SOMETHING;
+    Receive:
+      print_ret (The)noun, " won't fit in the box of matches.";
+  ],
+has;
+
+!========================================
+! Room 13: East of Vicarage
+!========================================
+Object room13 "East of Vicarage"
+with
+  description "You're at the east side of the vicarage. There's no entry to the vicarage from here. You know it's on the other side of the building. You can follow the path north or south around the vicarage or follow the branch to the east.",
+  n_to
+  [;
+    print (string)FOLLOW_PATH, "west.^^";
+    return room19;
+  ],
+  s_to
+  [;
+    print (string)FOLLOW_PATH, "west.^^";
+    return room14;
+  ],
+  e_to room02,
+  u_to
+  [;
+    if (ladder in self)
+    {
+      print (string)CLAMBER_UP_LADDER;
+      return room18;
+    }
+    print_ret (string)NEED_LADDER;
+  ],
+  before
+  [;
+    Hint:
+      if (room14 hasnt visited || room19 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+      if (room18 hasnt visited)
+        print_ret (string)IF_YOU_HAD_A_LADDER;
+  ],
+has light;
+
+!----------------------------------------
+! Path around vicarage
+!----------------------------------------
+Object "path"
+with
+  name 'path' 'paths//p',
+  description
+  [;
+    print "The path circles the vicarage";
+    if (self in room13)
+      print " with a branch off to the east";
+    if (self in room19)
+      print " with a branch off to the north";
+    ".";
+  ],
+  found_in room13 room14 room15 room19,
+has scenery;
+
+!========================================
+! Room 14: South of Vicarage
+!========================================
+Object room14 "South of Vicarage"
+with
+  description "You're at the south side of the vicarage. You can follow the path east or west around the vicarage.",
+  e_to
+  [;
+    print (string)FOLLOW_PATH, "north.^^";
+    return room13;
+  ],
+  w_to
+  [;
+    print (string)FOLLOW_PATH, "north.^^";
+    return room15;
+  ],
+  u_to
+  [;
+    if (ladder in self)
+    {
+      print (string)CLAMBER_UP_LADDER;
+      return room18;
+    }
+    print_ret (string)NEED_LADDER;
+  ],
+  before
+  [;
+    Hint:
+      if (room15 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+      if (room18 hasnt visited)
+        print_ret (string)IF_YOU_HAD_A_LADDER;
+  ],
+has light;
+
+!========================================
+! Room 15: West of Vicarage
+!========================================
+Object room15 "West of Vicarage"
+with
+  description "You're at the west side of the vicarage. The path around the vicarage goes north and south and the front door is to the east.",
+  n_to
+  [;
+    print (string)FOLLOW_PATH, "east.^^";
+    return room19;
+  ],
+  s_to
+  [;
+    print (string)FOLLOW_PATH, "east.^^";
+    return room14;
+  ],
+  e_to front_door,
+  u_to
+  [;
+    if (ladder in self)
+    {
+      print (string)CLAMBER_UP_LADDER;
+      return room18;
+    }
+    print_ret (string)NEED_LADDER;
+  ],
+  in_to front_door,
+  before
+  [;
+    Hint:
+      if (room16 hasnt visited && front_door hasnt open)
+        "The door isn't locked.";
+      if (room14 hasnt visited || room19 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+      if (room18 hasnt visited)
+        print_ret (string)IF_YOU_HAD_A_LADDER;
+  ],
+has light;
+
+!----------------------------------------
+! Front door (floating object)
+!----------------------------------------
+Object front_door "front door"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'front' or 'door' or 'simple' or 'wood' or 'wooden')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "It's a simple wooden door that leads ";
+    if (self in room15)
+      print "in to";
+    else
+      print "out of";
+    " the vicarage. It's currently ", (OpenOrClosed)self, ".";
+  ],
+  door_dir
+  [;
+    if (self in room15)
+      return e_to;
+    else
+      return w_to;
+  ],
+  door_to
+  [;
+    if (self in room15)
+      return room16;
+    else
+      return room15;
+  ],
+  before
+  [;
+    Attack:
+      if (self in room15 && vampire in room16)
+        "~Come in!~";
+  ],
+  found_in room15 room16,
+has door openable scenery;
+
+!========================================
+! Room 16: Living Room
+!========================================
+Object room16 "Living Room"
+with
+  description
+  [;
+    print "You're in the living room of the vicarage, although it looks so dirty and unkempt that 'dying room' would be a more apt description. It was never like this when Father Matisse was alive. He kept the vicarage very clean and tidy. ";
+    if (curtains hasnt open)
+      print "The curtains on the windows are closed, so it's quite dark and dingy.";
+    else
+      print "The sun is shining in now that you've opened the curtains.";
+    " The bedroom door is to the north and the front door is to the west.";
+  ],
+  n_to
+  [;
+    if (vampire in self)
+      "Father Alucard steps in front of the door and gives you a spine-chilling grin that exposes his sharp canine teeth. ~That's my bedroom, dear boy. There's nothing of interest to you in there.~";
+    return bedroom_door;
+  ],
+  w_to front_door,
+  out_to front_door,
+  before
+  [;
+    Hint:
+      if (vampire in self)
+        "Why is everything so dark? Try examining Father Alucard, talking to him and asking him about things.";
+      if (iron_key in nothing)
+        "Ashes to ashes, dust to dust. Search the ashes, if you must.";
+      if (ladder in nothing)
+        "What secrets does Father Alucard's bedroom hide?";
+  ],
+  after
+  [;
+    Say:
+      wn = consult_from;
+      if (consult_words == 1 && NextWord() == 'hello' or 'hi' && vampire in self)
+        "~Good morning, Jean~, responds Father Alucard.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Living room
+!----------------------------------------
+Object "living room" room16
+with
+  name 'living' 'room' 'vicarage',
+  description
+  [;
+    print "The living room is sparsely furnished. It looks to be very dirty and unkempt";
+    if (curtains hasnt open)
+      ", but maybe that's just an illusion, because the curtains on the windows are closed.";
+    else
+      ". Now that the curtains are open, you can see that the living room really is as dirty as it appeared when the curtains were closed.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Windows
+!----------------------------------------
+Object "windows" room16
+with
+  name 'window' 'windows//p',
+  description
+  [;
+    print "The windows are covered in dark curtains. ";
+    if (curtains hasnt open)
+      "That's very strange.";
+    else
+      "They're open now, so at least the sunlight can shine in.";
+  ],
+  before
+  [;
+    Open:
+      if (curtains hasnt open)
+        "You'll have to open the curtains, first.";
+      else
+        "If you want some fresh air, you can step outside through the front door.";
+  ],
+has pluralname scenery;
+
+!----------------------------------------
+! Curtains
+!----------------------------------------
+Object curtains "curtains" room16
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'coarse' or 'dark' or 'black' or 'material' or 'curtain' or 'curtains//p')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The curtains are made of a coarse black material that doesn't let any light in. Father Alucard must have replaced them, as they were a white lacy material when Father Matisse was alive. The curtains are currently ";
+    if (self hasnt open)
+      "closed to block out the sunlight.";
+    else
+      "open to let the sunlight in.";
+  ],
+  before
+  [;
+    Open:
+      if (vampire in location)
+        "Father Alucard stops you opening the curtains. ~My dear boy, I am sensitive to the light. Please leave the curtains closed.~";
+  ],
+  after
+  [;
+    Close:
+      "The living room is dark again.";
+    Open:
+      "Sunlight streams into the living room.";
+  ],
+has openable pluralname scenery;
+
+!----------------------------------------
+! Bedroom door (floating object)
+!----------------------------------------
+Object bedroom_door "bedroom door"
+with
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'bedroom' or 'door' or 'plain' or 'wood' or 'wooden')
+    {
+      i++;
+      if (nw == 'bedroom' && self in room17)
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description
+  [;
+    "It's a plain wooden door that's currently ", (OpenOrClosed)self, ".";
+  ],
+  door_dir
+  [;
+    if (self in room16)
+      return n_to;
+    else
+      return s_to;
+  ],
+  door_to
+  [;
+    if (self in room16)
+      return room17;
+    else
+      return room16;
+  ],
+  with_key iron_key,
+  found_in room16 room17,
+has door lockable locked openable scenery;
+
+!----------------------------------------
+! Father Alucard
+!----------------------------------------
+Object vampire "Father Alucard" room16
+with
+  name 'vampire' 'father' 'alucard' 'man',
+  description "Father Alucard is a tall, thin man with a very pale complexion, possibly because he never goes out into the sunlight, which you find very strange. Although he speaks good French, his accent is distinctly east European, possibly Romanian. He very rarely smiles, but when he does he exposes two sharp canine teeth, which you find very creepy.",
+  life
+  [;
+    Ask:
+      switch (second)
+      {
+        '10', 'ten', 'commandment', 'commandments//p':
+          "~The Ten Commandments were revealed to Moses at Mount Sinai and inscribed by the finger of God on two stone tablets kept in the Ark of the Covenant.~";
+        'accent':
+          "~No matter how hard I try, I can't get rid of that accent. I was raised in Transylvania. You probably haven't heard of it. It's a region in Romania.~";
+        'alucard', 'himself':
+          "~I used to ask God if He could help me. And He did. Then I asked if I could help Him. I am now but a servant of God, here to serve the people of this village in their religious upbringing.~";
+        'andre', 'matisse':
+          "~Father Matisse was my predecessor. I didn't know him personally, but the parishioners speak highly of him. I buried him a couple of days ago, just before you arrived.~";
+        'ark', 'covenant':
+          give self general;
+          "~I have been on a lifelong quest to find the Ark of the Covenant, as it is Christianity's most holy relic. That quest has brought me to this village, but my search here has only just begun.~ With this revelation, you detect a glint of evil in the eyes of Father Alucard. You wonder whether his intentions are noble.";
+        'bible':
+          "~The Bible is the holy scripture of the Christian religion, but I'm sure you know that.~";
+        'canaan', 'promised', 'land':
+          "~Canaan is the promised land of the Israelites.~";
+        'christ', 'jesus', 'son':
+          "~Jesus is the Son of God, and Jesus is all you need.~";
+        'church':
+          "~The church may be made of stone, but its foundations are based on our faith in the Lord.~";
+        'council':
+          "~Do you mean the Church Council? I know only that they sent you here to complete your training.~";
+        'cross':
+          "~The cross is the symbol of Christianity. Surely, you know that. It is symbolic of the cross on which our dear Lord was crucified.~";
+        'crucifix':
+          "~The word 'crucifix' is from the Latin 'cruci fixus', meaning 'fixed to a cross'. It is a cross with an image of Jesus on it, as distinct from a bare cross.~";
+        'deuteronomy':
+          "~Deuteronomy is the fifth book in the Old Testament and the last book of Moses. The core of Deuteronomy is the covenant that binds Yahweh and Israel by oaths of fidelity and obedience. God will give Israel blessings of the land, fertility and prosperity, so long as Israel is faithful to God's teaching. Disobedience will lead to curses and punishment.~";
+        'dracula', 'vampire', 'vampires//p':
+          "Father Alucard twitches nervously, as though you have raised a touchy subject. ~Why do you ask about vampires, my son? Surely, you must know that these are fictitious imaginings of those with weak minds.~";
+        'exodus':
+          "~Exodus is the second book in the Old Testament and also the second book of Moses. We see God fulfilling His promises to Abraham, Isaac and Jacob and delivering the children of Israel to freedom. Most importantly, He delivers His covenant with Moses on Mount Sinai.~";
+        'genesis':
+          "~Genesis is the first book of Moses and the first book in the Old Testament. It begins with God's creation of heaven and Earth, but the important message is God's creation and love of humanity. Surely, you know this.~";
+        'god', 'lord':
+          "He crosses himself at the mention of this. ~We can ignore Him, but we cannot evade Him, for he is present everywhere.~";
+        'leviticus':
+          "~Leviticus is the third book of Moses and the third book of the Old Testament. Its overall message is sanctification. It tells us that receiving God's forgiveness and acceptance should be followed by holy living and spiritual growth.~";
+        'love':
+          "~God loves each of us as if there were only one of us.~";
+        'me', 'myself', 'self', 'jean', 'rousseau':
+          "~I hardly know you. We have only just met. I know you were sent here by the Church Council, as this is your home village.~";
+        'moses':
+          "~Moses is considered the most important of the prophets in the Old Testament, for it is he that received God's word in the Ten Commandments.~";
+        'numbers':
+          "~Numbers is the fourth book of Moses. That makes it the fourth book in the Old Testament. It tells us the history of the Israelites as they wandered in the wilderness after their departure from Sinai and before their occupation of Canaan, the Promised Land. It describes their suffering and their numerous complaints against God.~";
+        'romania', 'transylvania':
+          "~Does my accent give me away? Yes, I originally came from Romania.~";
+        'vicarage':
+          "He spreads his arms as if to welcome you to his dingy home. ~My needs are simple, as you can see, but you are always welcome to join me, my son.~";
+        'yahweh':
+          "~Yahweh is the Hebrew name of God revealed to Moses in the book of Exodus.~";
+        default:
+          self.number++;
+          if (self.number == 5)
+            "~You sure do ask a lot of questions. If I can't answer you, then pray to God, for he surely can.~";
+          "~I can't answer that, but you can trust in God when you have unanswered questions.~";
+      }
+    Give, Show:
+      if (noun == bible)
+        "~Ah, I see that you keep God's word with you. That is good, but you should really return it to the sanctuary for the next service.~";
+      if (noun == crucifix)
+      {
+        remove vampire;
+        move ashes to location;
+        "Father Alucard screams at the sight of the crucifix and tries to cover his eyes. There's a bright flash of white light and you are temporarily blinded. When your eyes recover, you see that Father Alucard has turned to ashes.";
+      }
+      if (noun == silver_key)
+        "Father Alucard looks aghast at the sight of the silver key. ~Where did you get that? Return it to where you found it, immediately!~";
+    Talk:
+      print "~Good morning, Jean. It's a lovely day indoors. Did you want to ask me about something?~";
+      if (self hasnt general)
+        print "^^There are lots of things that you'd like to ask Father Alucard about. Perhaps you should ask him about the Ark.";
+      "";
+  ],
+  number 0,
+has animate proper;
+
+!----------------------------------------
+! Ashes
+!----------------------------------------
+Object ashes "ashes"
+with
+  name 'ash' 'ashes//p',
+  description
+  [;
+    print "These are the remains of Father Alucard. From what you experienced here, you deduce that he must have been a vampire.";
+    if (iron_key in nothing)
+      print " You wonder whether the ashes may conceal something.";
+    "";
+  ],
+  before
+  [;
+    Dig, Search:
+      if (iron_key in nothing)
+      {
+        move iron_key to location;
+        "When you sift through the ashes, you find an iron key.";
+      }
+      "You sift through the ashes again, but don't find anything else.";
+    Take:
+      print "The ashes sift through your fingers.";
+      if (iron_key in nothing)
+        print " You feel something solid. Perhaps you should search the ashes more carefully.";
+      "";
+  ],
+has pluralname static;
+
+!----------------------------------------
+! Iron key
+!----------------------------------------
+Object iron_key "iron key"
+with
+  article AN,
+  name 'iron' 'key',
+  description "It's an old-fashioned iron key.",
+has;
+
+!========================================
+! Room 17: Bedroom
+!========================================
+Object room17 "Bedroom"
+with
+  description "This is obviously a bedroom, as it's dominated by a large bed. You haven't been in here before. You are surprised at how spartan it is. Father Matisse obviously lived a very frugal lifestyle and Father Alucard has not had time to change the decor. You notice a faint image of a cross on the wall above the bed. The exit is to the south.",
+  s_to room16,
+  before
+  [;
+    Hint:
+      if (ladder in nothing)
+        "It is customary to hide things under the bed.";
+    Sleep:
+      "The bed looks very comfy and a snooze is tempting, but sleeping is not going to return the Ark to the altar.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Bedroom
+!----------------------------------------
+Object "bedroom" room17
+with
+  name 'bedroom' 'room',
+  description "The bedroom is just as dark and dingy as the living room.",
+has scenery;
+
+!----------------------------------------
+! Image of crucifix
+!----------------------------------------
+Object "image of a cross" room17
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'faint' or 'image' or 'of' or 'cross' or 'wall' or 'paint')
+      i++;
+    return i;
+  ],
+  description "The paint on the wall has faded after years of exposure to the sunlight, leaving a very faint image of a cross with little trefoils at the end of each arm. The shape is the same as the crucifix you found in the north transept. You deduce that Father Alucard removed the crucifix and hid it to protect himself from the power of the Lord.",
+has scenery;
+
+!----------------------------------------
+! Bed
+!----------------------------------------
+Object bed "bed" room17
+with
+  name 'large' 'bed',
+  description "The bed looks very comfy, but it doesn't look like it's been slept in for quite some time.",
+  before
+  [;
+    Enter:
+      if (verb_word == 'lie')
+        <<Sleep>>;
+      if (verb_word == 'sit')
+        "You sit on the bed to try it. Yep, it sure is comfy, but you have no time to waste sitting around on someone else's bed, so you stand up again.";
+      if (verb_word == 'stand')
+        "Keep your dirty shoes off the bed.";
+    LookUnder:
+      if (ladder in nothing)
+      {
+        move ladder to location;
+        "When you look under the bed, you find a ladder. That's a strange place to keep a ladder, so you pull it out.";
+      }
+  ],
+has static supporter;
+
+!----------------------------------------
+! Ladder
+!----------------------------------------
+Object ladder "ladder"
+with
+  name 'ladder',
+  description
+  [;
+    print "It's a simple wooden ladder, maybe 3.5 m long.";
+    if (self in room19)
+      print " It's leaning against the north wall of the vicarage.";
+    if (self in room15)
+      print " It's leaning against the east wall of the vicarage.";
+    if (self in room13)
+      print " It's leaning against the west wall of the vicarage.";
+    if (self in room14)
+      print " It's leaning against the south wall of the vicarage.";
+    if (self in room01)
+      print " It's leaning against the west wall of the church.";
+    "";
+  ],
+  before
+  [;
+    Climb:
+      if (ladder in player)
+        "You can't very well climb the ladder while you're holding it.";
+      if (ladder in room19 or room15 or room13 or room14 or room01)
+        <<Go FAKE_U_OBJ>>;
+      if (location has indoors)
+        "You'll need to take the ladder outdoors if you expect to climb anything.";
+      "There's nothing to climb here.";
+  ],
+  after
+  [;
+    Drop:
+      if (location == room19 or room15 or room13 or room14 or room01)
+        "You prop the ladder against the wall.";
+  ],
+has;
+
+!========================================
+! Room 18: Roof of Vicarage
+!========================================
+Object room18 "Roof of Vicarage"
+with
+  description "You're on the roof of the vicarage. Be careful not to fall. The only exit is back down the ladder.",
+  u_to "Now that you're on the roof, you might be closer to God, but that doesn't mean you can ascend into heaven.",
+  d_to
+  [;
+    print "You climb back down the ladder.^^";
+    return parent(ladder);
+  ],
+  cant_go "If you were to step off the edge of the roof, you would tumble to the ground below. You're too young to visit St Peter, so you decide to leave your visit to the Pearly Gates until another time.",
+  before
+  [;
+    Hint:
+      if (painting hasnt general)
+        "Examine the roof and read what you find there.";
+      "The only way off the roof is to climb back down the ladder.";
+  ],
+has light;
+
+!----------------------------------------
+! Roof
+!----------------------------------------
+Object "roof" room18
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'roof' or 'line' or 'slate' or 'tile' or 'tiles//p' or 'rustic-looking' or 'rustic' or 'looking' or 'vicarage')
+      i++;
+    return i;
+  ],
+  description "The vicarage roof is made from rustic-looking slate tiles. There's some painting on one of the tiles.",
+has scenery;
+
+!----------------------------------------
+! Top of ladder
+!----------------------------------------
+Object "top of the ladder" room18
+with
+  article THE,
+  name 'top' 'of' 'ladder',
+  description "The top of the ladder projects just above the roof line.",
+  before
+  [;
+    Climb, Enter:
+      <<Go FAKE_D_OBJ>>;
+    Pull, Push,Take:
+      "If you move the ladder, you won't be able to get back down again.";
+  ],
+has static;
+
+!----------------------------------------
+! Painting
+!----------------------------------------
+Object painting "painting" room18
+with
+  name 'painting' 'painted' 'message' 'moss',
+  description
+  [;
+    print "It's a painted message, partially obscured by moss.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Leviticus ", (string)leviticus_passage-->leviticus, "'.";
+  ],
+has scenery;
+
+!========================================
+! Room 19: North of Vicarage
+!========================================
+Object room19 "North of Vicarage"
+with
+  description "You're at the north side of the vicarage. The path goes east and west around the vicarage with a faint path leading off to the north.",
+  n_to room20,
+  e_to
+  [;
+    print (string)FOLLOW_PATH, "south.^^";
+    return room13;
+  ],
+  w_to
+  [;
+    print (string)FOLLOW_PATH, "south.^^";
+    return room15;
+  ],
+  u_to
+  [;
+    if (ladder in self)
+    {
+      print (string)CLAMBER_UP_LADDER;
+      return room18;
+    }
+    print_ret (string)NEED_LADDER;
+  ],
+  before
+  [;
+    Hint:
+      if (room13 hasnt visited || room15 hasnt visited || room20 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+      if (room18 hasnt visited)
+        print_ret (string)IF_YOU_HAD_A_LADDER;
+  ],
+has light;
+
+!========================================
+! Room 20: Path through Forest
+!========================================
+Object room20 "Path through Forest"
+with
+  description "You're wandering down a faint path that meanders south and west through the forest.",
+  n_to FOREST_IS_TOO_DENSE,
+  s_to room19,
+  e_to FOREST_IS_TOO_DENSE,
+  w_to room21,
+  u_to
+  [;
+    tree.tree_location = location;
+    return room26;
+  ],
+  before
+  [;
+    Hint:
+      if (room21 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!----------------------------------------
+! Forest (floating object)
+!----------------------------------------
+Object "forest"
+with
+  parse_name
+  [ nw i flag;
+    nw = NextWord();
+    while (nw == 'forest' or 'old' or 'tree' or 'trees//p' or 'common' or 'oak' or 'scots' or 'pine' or 'birch' or 'hornbeam' or 'european' or 'beech' or 'hazel' or 'corsican' or 'black' or 'wild' or 'apple' or 'lime')
+    {
+      i++;
+      if (nw == 'tree' && self in room26)
+        flag++;
+      nw = NextWord();
+    }
+    if (i == flag)
+      return 0;
+    return i;
+  ],
+  description "The forest is full of old trees, primarily common oak and Scots pine. There are also scattered examples of birch, hornbeam, European beech, hazel, Corsican black pine, wild apple and lime trees.",
+  before
+  [;
+    Climb:
+      if (self in room20 or room25 or room29 or room30)
+        <<Go FAKE_U_OBJ>>;
+      "The trees here aren't suitable for climbing.";
+  ],
+  found_in
+  [;
+    if (location == room03 or room04 or room20 or room25 or room26 or room29 or room30 or room31)
+      rtrue;
+  ],
+has scenery;
+
+!----------------------------------------
+! Path (floating object)
+!----------------------------------------
+Object "path"
+with
+  name 'path' 'paths//p' 'track',
+  description "The path winds amongst the trees.",
+  found_in
+  [;
+    if (location == room20 or room21 or room25 or room29 or room30 or room31)
+      rtrue;
+  ],
+has scenery;
+
+!========================================
+! Room 21: Shore of Pond
+!========================================
+Object room21 "Shore of Pond"
+with
+  description "You're on the southern shore of a clear pond. This is a great waterhole for swimming and fishing in warm weather, but it's very cold today. It looks quite deep, so keep away from the edge. The only path is back to the east.",
+  n_to
+  [;
+    if (suit hasnt worn)
+      "Br-r-r! Are you kidding? The water is freezing.";
+    if (children(player) > 1)
+      "You'll have to drop everything before entering the pond because you don't want to get anything wet and it's too awkward to carry things while wearing the diving suit.";
+    return room22;
+  ],
+  s_to FOREST_IS_TOO_DENSE,
+  e_to
+  [;
+    if (suit has worn)
+      "The diving suit is too heavy and cumbersome to wear while walking around on land. You'll need to remove it first.";
+    if (cassock hasnt worn)
+      "You can't go wandering around in your underwear. Put your cassock back on.";
+    return room20;
+  ],
+  w_to FOREST_IS_TOO_DENSE,
+  before
+  [;
+    Go:
+      if (selected_direction == in_to)
+        <<Go FAKE_N_OBJ>>;
+    Hint:
+      if (room22 hasnt visited && suit hasnt worn)
+        "Have you felt the water? It sure is cold. You'll need to wear something warm before you can go swimming.";
+      if (room22 hasnt visited)
+        "Feel like a swim?";
+      if (carving hasnt general)
+        "You missed something in the pond.";
+      if (cassock hasnt worn)
+        "Make sure you get dressed before going back to the church.";
+  ],
+has light;
+
+!----------------------------------------
+! Shore
+!----------------------------------------
+Object "shore" room21
+with
+  name 'shore' 'edge',
+  description "It's where the land of the forest meets the water of the pond, so you're sure it's a shore.",
+has scenery;
+
+!----------------------------------------
+! Pond (floating object)
+!----------------------------------------
+Object "pond"
+with
+  name 'pond' 'pool' 'water' 'waterhole',
+  description
+  [;
+    if (room23 hasnt visited)
+      "The water is crystal clear.";
+    else
+      "The water is muddy from where you've been churning up the bottom of the pond.";
+  ],
+  react_before
+  [;
+    Swim:
+      if (self in room26)
+        "You'll have to climb down first.";
+      if (self in room21)
+        <<Go FAKE_N_OBJ>>;
+      if (self in room22 && verb_word == 'dive')
+        <<Go FAKE_D_OBJ>>;
+      "You're already swimming...well, sort of.";
+  ],
+  before
+  [;
+    if (self in room26 && action ~= ##Examine)
+      "You'll have to climb down first.";
+    Drink:
+      if (suit has worn)
+        "You would have to remove the diving suit to drink the water in the pool.";
+      if (room23 hasnt visited)
+        "Ah, very refreshing.";
+      "No way! The water is all muddy from where you churned up the bottom of the pond.";
+    Enter:
+      if (self in room26)
+        "You'll have to climb down first.";
+      if (self in room21)
+        <<Go FAKE_N_OBJ>>;
+      "You're already in the pond.";
+    Receive:
+      "Don't be silly.";
+    Touch:
+      if (suit has worn)
+        "You can't feel the water through the diving suit.";
+      if (self in room21)
+        "The water in the pond is cold and wet.";
+  ],
+  found_in
+  [;
+    if (location == room21 or room22 or room23 or room24 or room26)
+      rtrue;
+  ],
+has scenery;
+
+!========================================
+! Room 22: Pond
+!========================================
+Object room22 "Pond"
+with
+  description "You're splashing about in a cold pond in the forest. As you're wearing a diving suit, you can dive to the bottom. Otherwise, the shore is back to the south.",
+  s_to room21,
+  d_to room23,
+  out_to room21,
+  before
+  [;
+    Hint:
+      if (room23 hasnt visited)
+        "The water is deep, but the diving suit is made for diving.";
+      if (carving hasnt general)
+        "You missed something at the bottom of the pond.";
+  ],
+has light underwater;
+
+!========================================
+! Room 23: Bottom of Pond
+!========================================
+Object room23 "Bottom of Pond"
+with
+  name 'pond',
+  description "You're clomping about on the bottom of the pond in your awkward diving suit. Every time you take a step, little puffs of mud cloud the water, making it difficult to see. When you've finished searching the pond, you can go up to return to the surface.",
+  n_to
+  [;
+    if (reeds hasnt general)
+      "The reeds are too thick to go that way. You could try clearing them out of the way.";
+    return room24;
+  ],
+  u_to room22,
+  before
+  [;
+    Go:
+      if (selected_direction == in_to)
+        <<Go FAKE_N_OBJ>>;
+    Hint:
+      if (reeds hasnt general)
+        "Try moving the reeds to see what's in that direction.";
+      if (room24 hasnt visited)
+        "Try examining the reeds.";
+      if (carving hasnt general)
+        "You missed something in the underwater grotto.";
+      "You can swim back to the surface by going up.";
+  ],
+has light underwater;
+
+!----------------------------------------
+! Mud at bottom of pond
+!----------------------------------------
+Object "mud"
+with
+  name 'mud' 'bottom',
+  description "The bottom of the pond is full of reeds and the water is cloudy from where you've disturbed the mud.",
+  found_in room23 room24,
+has scenery;
+
+!----------------------------------------
+! Underwater grotto
+!----------------------------------------
+Object grotto "underwater grotto"
+with
+  article AN,
+  name 'underwater' 'grotto',
+  description "The water in the grotto is quite clear, except where you've disturbed the mud by clomping around in your diving suit.",
+  found_in room23 room24,
+has absent scenery;
+
+!----------------------------------------
+! Reeds (floating object)
+!----------------------------------------
+Object reeds "reeds"
+with
+  name 'reed' 'reeds//p',
+  description
+  [;
+    print "The reeds are quite thick and make exploration difficult. ";
+    if (self in room24)
+      "They are growing around a large boulder.";
+    if (self hasnt general)
+      "They are particularly thick towards the north.";
+    else
+      "Now that you've cleared some of the reeds, you can see an underwater grotto to the north.";
+  ],
+  before
+  [;
+    Attack, Cut, Dig, Pull, Push, Search:
+      if (self in room23 && self hasnt general)
+      {
+        give self general;
+        give grotto ~absent;
+        MoveFloatingObjects();
+        "When you move the reeds aside, you see an underwater grotto to the north.";
+      }
+      if (self in room23)
+        "You've already cleared a patch of reeds to reveal an underwater grotto to the north.";
+    Enter:
+      if (self hasnt general)
+        <<Go FAKE_N_OBJ>>;
+    Touch:
+      print "They're very thick.";
+      if (self hasnt general)
+        print " You could try moving them out of the way.";
+      "";
+  ],
+  found_in room23 room24,
+has pluralname static;
+
+!========================================
+! Room 24: Underwater Grotto
+!========================================
+Object room24 "Underwater Grotto"
+with
+  description "You're in an underwater grotto beneath the pond. It's dominated by a large boulder surrounded by reeds. The exit from the grotto is back to the south.",
+  s_to room23,
+  out_to room23,
+  before
+  [;
+    Hint:
+      if (carving hasnt general)
+        "Examine the boulder and read what you find there.";
+  ],
+has light underwater;
+
+!----------------------------------------
+! Large boulder
+!----------------------------------------
+Object "large boulder" room24
+with
+  name 'large' 'boulder' 'rock',
+  description "There's a carving in the boulder.",
+has static;
+
+!----------------------------------------
+! Carving
+!----------------------------------------
+Object carving "carving" room24
+with
+  name 'carving' 'crude' 'message',
+  description
+  [;
+    print "Someone has carved a crude message in the boulder.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Genesis ", (string)genesis_passage-->genesis, "'.";
+  ],
+has scenery;
+
+!========================================
+! Room 25: South Forest
+!========================================
+Object room25 "South Forest"
+with
+  description "You're in the southern part of the forest. The path heads north and south with a faint branch to the east that leads into a cave.",
+  n_to room29,
+  s_to room01,
+  e_to room27,
+  w_to FOREST_IS_TOO_DENSE,
+  u_to
+  [;
+    tree.tree_location = location;
+    return room26;
+  ],
+  in_to room27,
+  before
+  [;
+    Hint:
+      if (room27 hasnt visited || room29 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!========================================
+! Room 26: Up a Tree
+!========================================
+Object room26 "Up a Tree"
+with
+  description "You're up a tree. You can see a lot from here. The forest is all around you with a clearing towards the north and a glint of water to the west.",
+  d_to
+  [;
+    return tree.tree_location;
+  ],
+  before
+  [;
+    Hint:
+      "You're a seminarian, not a monkey. I don't know what possessed you to climb up here in the first place, but I think you should climb back down now.";
+  ],
+  after
+  [;
+    Drop:
+      move noun to tree.tree_location;
+      print (The)noun," fall";
+      if (noun hasnt pluralname)
+        print "s";
+      " to the ground below.";
+  ],
+has light;
+
+!----------------------------------------
+! Tree
+!----------------------------------------
+Object tree "tree" room26
+with
+  name 'tree',
+  description "This is a common oak tree. It's a nice place for birds to be, but not so nice for seminarians.",
+  before
+  [;
+    Climb:
+      <<Go FAKE_D_OBJ>>;
+  ],
+  tree_location 0,
+has scenery;
+
+!========================================
+! Room 27: Cave Entrance
+!========================================
+Object room27 "Cave Entrance"
+with
+  description
+  [;
+    print "You're in the entrance of a cave. It looks like a naturally-formed cave, but it's hard to tell in the darkness. Light filters in from the entrance to the west and the cave continues to the east.";
+    if (wall in self)
+      print " However, any progress to the east is blocked by a man-made wall.";
+    "";
+  ],
+  e_to
+  [;
+    if (wall in self)
+      "In case you didn't notice, there's a whopping great wall in the way.";
+    else
+      return room28;
+  ],
+  w_to room25,
+  out_to room25,
+  before
+  [;
+    Go:
+      if (selected_direction == in_to)
+        <<Go FAKE_E_OBJ>>;
+    Hint:
+      if (rubble has absent)
+        "A man-made wall hides man-made things.";
+      if (room28 hasnt visited)
+        "Don't be scared of the dark. Go east.";
+  ],
+has indoors light;
+
+!----------------------------------------
+! Cave entrance
+!----------------------------------------
+Object "cave entrance" room27
+with
+  name 'cave' 'entrance',
+  description "The entrance of the cave is dimly lit by the light filtering in from the west, but it quickly gets dark towards the east.",
+has scenery;
+
+!----------------------------------------
+! Wall
+!----------------------------------------
+Object wall "wall" room27
+with
+  name 'wall' 'clay' 'brick' 'bricks//p',
+  description "It's a very solid-looking wall made from clay bricks. The wall goes from floor to ceiling, so you can't see what's on the other side.",
+  before
+  [;
+    Attack:
+      if (second == nothing && hammer in player)
+      {
+        print "(with the sledge hammer)^";
+        second = hammer;
+      }
+      if (second == nothing)
+        "You pound away at the wall with your clenched fists, but only hurt your hands.";
+      if (second ~= hammer)
+        "You can't break it with ", (ThatOrThose)second, ".";
+      remove self;
+      give rubble ~absent;
+      MoveFloatingObjects();
+      "When you pound into the wall with the sledge hammer, it comes tumbling down like the walls of Jericho. You can only see darkness on the other side of the rubble.";
+  ],
+has scenery;
+
+!----------------------------------------
+! Pile of rubble (floating object)
+!----------------------------------------
+Object rubble "pile of rubble"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'pile' or 'of' or 'rubble' or 'clay' or 'brick' or 'bricks//p')
+      i++;
+    return i;
+  ],
+  description "This is the remains of the clay brick wall.",
+  before
+  [;
+    Dig, Search:
+      "There's nothing but smashed clay bricks.";
+    Take:
+      "You would need a wheelbarrow to remove all those bricks.";
+  ],
+  found_in room27 room28,
+has absent static;
+
+!========================================
+! Room 28: Cave
+!========================================
+Object room28 "Cave"
+with
+  description "The cave ends rather abruptly. There's nothing much here, although the chisel marks on the wall indicate that somebody has been mining here in the past. The exit is back to the west through the pile of rubble.",
+  w_to room27,
+  out_to room27,
+  before
+  [;
+    Hint:
+      if (real_location == thedark && (candle hasnt moved || matches hasnt moved))
+        "You need a source of light. Explore the church.";
+      if (real_location == thedark)
+        "You have found a source of light. Now is the time to use it.";
+      if (writing hasnt general)
+        "The writing's on the wall, so why don't you read it?";
+  ],
+has indoors;
+
+!----------------------------------------
+! Cave
+!----------------------------------------
+Object "cave" room28
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'cave' or 'chisel' or 'mark' or 'marks//p' or 'old' or 'mine')
+      i++;
+    return i;
+  ],
+  description "It looks like this is an old mine, but there's no indication of what they were mining for.",
+has scenery;
+
+!----------------------------------------
+! Writing on wall
+!----------------------------------------
+Object writing "writing on the wall" room28
+with
+  article SOME,
+  name 'writing' 'on' 'wall' 'chalk',
+  description
+  [;
+    print "The writing looks like it's been done in chalk, so it's quite hard to read in the flickering light of your candle.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      print_ret (string)IT_SAYS, "'Deuteronomy ", (string)deuteronomy_passage-->deuteronomy, "'.";
+  ],
+has static;
+
+!----------------------------------------
+! Stick of dynamite
+!----------------------------------------
+Object dynamite "stick of dynamite" room28
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'red' or 'stick' or 'of' or 'dynamite' or 'fuse')
+      i++;
+    return i;
+  ],
+  description "It's a red stick of dynamite with a long fuse.",
+  before
+  [;
+    Burn:
+      if (self has light)
+        "It's already lit.";
+      if (second == nothing && matches in player)
+      {
+        print "(with the matches)^";
+        second = matches;
+      }
+      if (second == nothing)
+        "You'll have to tell me what to light it with.";
+      if (second ~= matches)
+        "You can't light the dynamite with ", (ThatOrThose)second, ".";
+      if (self in player)
+        "Are you crazy? God said the meek shall inherit the Earth, not the idiots! You'd better drop the dynamite before lighting it unless you want to meet your maker.";
+      if (location ~= room31)
+        "You only have one stick of dynamite and you can't see anything worth blowing up around here. I think you should save it until you need it.";
+      if (self notin small_hole)
+        "If you're trying to blow up the stump, the dynamite would be more effective if it was placed in or under the stump. Have you examined it carefully?";
+      give self light;
+      StartTimer(self, 3);
+      "The wick of the dynamite is now burning like a sparkler. You'd better get out of here before it blows up!";
+    Blow, Extinguish:
+      if (self hasnt light)
+        "It's not lit.";
+      "Too late. You can't stop the inevitable.";
+    Take:
+      if (self has light)
+        "Are you crazy? Get out of here before it blows up!";
+  ],
+  time_out
+  [;
+    remove dynamite;
+    remove seal;
+    while (child(stump))
+      move child(stump) to room31;
+    remove stump;
+    move large_hole to room31;
+    if (player in room31)
+    {
+      deadflag = 1;
+      "^KABOOM! The dynamite blows up the stump and blows up the stupid seminarian who wasn't smart enough to get out of here, despite being told to do so. St Peter is waiting for you.";
+    }
+    "^KABOOM! You hear an explosion nearby. You can now inspect the damage.";
+  ],
+  time_left 3,
+has;
+
+!========================================
+! Room 29: Forest
+!========================================
+Object room29 "Forest"
+with
+  description "You're in the middle of the forest. The path winds its way through the trees to the north and south.",
+  n_to room30,
+  s_to room25,
+  e_to FOREST_IS_TOO_DENSE,
+  w_to FOREST_IS_TOO_DENSE,
+  u_to
+  [;
+    tree.tree_location = location;
+    return room26;
+  ],
+  before
+  [;
+    Hint:
+      if (room30 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!========================================
+! Room 30: North Forest
+!========================================
+Object room30 "North Forest"
+with
+  description "You're at the northern end of the forest. The path ends here, but there is a clearing to the west or you can head back to the south.",
+  n_to FOREST_IS_TOO_DENSE,
+  s_to room29,
+  e_to FOREST_IS_TOO_DENSE,
+  w_to room31,
+  u_to
+  [;
+    tree.tree_location = location;
+    return room26;
+  ],
+  before
+  [;
+    Hint:
+      if (room31 hasnt visited)
+        print_ret (string)CHOICE_OF_DIRECTIONS;
+  ],
+has light;
+
+!========================================
+! Room 31: Clearing West of Forest
+!========================================
+Object room31 "Clearing West of Forest"
+with
+  description "This area was probably once part of the forest, but it's now been cleared. You can return to the forest path back to the east.",
+  n_to FOREST_IS_TOO_DENSE,
+  s_to FOREST_IS_TOO_DENSE,
+  e_to room30,
+  w_to FOREST_IS_TOO_DENSE,
+  d_to
+  [;
+    if (large_hole in self)
+      return room32;
+  ],
+  before
+  [;
+    Hint:
+      if (seal hasnt general)
+        "The seal is real, so read the seal to seal the deal.";
+      if (stump in self && dynamite notin small_hole)
+        "Examine in and around the stump. What's that between the roots?";
+      if (stump in self)
+        "Violence isn't always the answer, but we'll make an exception in this case.";
+      if (room32 hasnt visited)
+        "What are you waiting for? Climb into the large hole.";
+  ],
+has light;
+
+!----------------------------------------
+! Clearing (floating object)
+!----------------------------------------
+Object "clearing"
+with
+  name 'clearing',
+  description "You guess that the clearing was cleared for the timber, either for building materials or for firewood.",
+  found_in room26 room30 room31,
+has scenery;
+
+!----------------------------------------
+! Stump
+!----------------------------------------
+Object stump "stump" room31
+with
+  name 'stump',
+  description
+  [;
+    print "The stump is nearly 1 metre in diameter, so it's from a very old tree. The roots extend from the base of the stump like the gnarled fingers of an old woman. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Dig:
+      if (second == nothing && shovel in player)
+      {
+        print "(with the shovel)^";
+        second = shovel;
+      }
+      if (second == nothing)
+        print_ret (string)WOULD_NOT_BE_PROPER;
+      if (second ~= shovel)
+        print_ret (string)CANT_DIG_ANYTHING, (ThatOrThose)second, ".";
+      "The soil around the stump is dry and hard from exposure to the sun. You'll need more than a shovel to remove this stump.";
+    Enter:
+      if (verb_word == 'lie')
+        "It's not big enough to lie on.";
+      if (verb_word == 'sit')
+        "You sit on the weathered old stump and get a splinter in your bottom. Ouch! You stand up again.";
+      "You stand on the stump and decide that this was a silly idea, so you step down again.";
+    Pull, Push:
+      "Your faith can move mountains, but it can't move this stump. You'll need something more explosive than faith alone.";
+  ],
+  add_to_scope roots small_hole,
+has enterable static supporter;
+
+!----------------------------------------
+! Seal
+!----------------------------------------
+Object seal "seal" stump
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'seal' or 'writing' or 'concentric' or 'ring' or 'rings//p' or 'diagram' or 'dome' or 'five' or 'pillar' or 'pillars//p' or 'flat' or 'part')
+      i++;
+    return i;
+  ],
+  description
+  [;
+    print "The seal is quite weathered. It consists of two concentric rings with some writing between the rings. There's a diagram in the centre, which looks like a dome on five pillars. From your religious studies, you guess that it could be 'The Dome of the Rock' or a circular dome of the 'Church of the Holy Sepulchre'.";
+    if (self hasnt general)
+      print (string)YOU_SHOULD_READ_IT;
+    "";
+  ],
+  before
+  [;
+    Read:
+      give self general;
+      "The writing on the seal says, 'CRISTI DE TEMPLO'. It could be Latin. If it is, 'Cristi' would mean 'Christ' and 'Templo' would mean 'Temple', or maybe 'Templar'?";
+    Take:
+      "The seal looks like it's been burned into the stump with a branding iron.";
+  ],
+has static;
+
+!----------------------------------------
+! Roots
+!----------------------------------------
+Object roots "roots"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'root' or 'roots//p' or 'gnarled' or 'finger' or 'fingers//p' or 'surface' or 'ground' or 'base')
+      i++;
+    return i;
+  ],
+  description "The roots are rough and knobbly and extend from the base of the stump for a short distance before diving beneath the ground. You can see a small hole at the base of the stump between two of the roots.",
+has scenery;
+
+!----------------------------------------
+! Small hole
+!----------------------------------------
+Object small_hole "small hole"
+class OpenContainer
+with
+  name 'small' 'hole' 'soil',
+  description
+  [;
+    print "It's a small hole, about the width of a candle, where the soil has been eroded away from beneath the stump. ";
+    if (children(self) == 0)
+      "It's quite dark, but you think you can see something in the hole where the original tree has grown over the top of it.";
+    else
+      <<Search self>>;
+  ],
+  before
+  [;
+    Receive:
+      if (noun == candle)
+        "The candle fits snugly in the hole, but you're concerned that you might lose it, so you pull it back out again.";
+      if (noun ~= dynamite)
+        print_ret (The)noun, " won't fit in the hole.";
+    Search:
+      if (children(self) == 0)
+        "You can see something in the hole beneath the stump, but you can't tell what it is and you can't reach it. The only way to get to it would be to remove the stump, but you can't remove it by hand.";
+  ],
+has container open scenery;
+
+!----------------------------------------
+! Large hole in the ground
+!----------------------------------------
+Object large_hole "large hole in the ground"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'large' or 'hole' or 'in' or 'the' or 'ground')
+      i++;
+    return i;
+  ],
+  description "Wow. The stick of dynamite sure blew a big hole here.",
+  before
+  [;
+    Enter:
+      <<Go FAKE_D_OBJ>>;
+  ],
+has static;
+
+!========================================
+! Room 32: Hole
+!========================================
+Object room32 "Hole"
+with
+  description "You're in a hole where the stump used to be. You can only go up to climb out of the hole.",
+  u_to room31,
+  out_to room31,
+  before
+  [i;
+    Hint:
+      if (chest has locked)
+      {
+        if (carving has general)
+          i++;
+        if (engraving has general)
+          i++;
+        if (painting has general)
+          i++;
+        if (message has general)
+          i++;
+        if (writing has general)
+          i++;
+        print "The combination requires five numbers and the sequence. You have found ", i, " clues that lead to the numbers. ";
+        if (i < 5)
+          "Come back when you have found all the numbers.";
+        else
+          "Moses can lead you to the sequence.";
+      }
+      if (ark hasnt moved && chest hasnt open)
+        "Open the chest!";
+      if (ark hasnt moved)
+        "You came all this way to find the Ark. What are you waiting for? Take it!";
+      "Return the Ark to its rightful place on the altar.";
+  ],
+  after
+  [;
+    EnterNumber:
+      if (chest hasnt locked)
+        "It's already unlocked.";
+      if (consult_words == 1 && CompareStringWithByteArray(combination, WordAddress(consult_from), WordLength(consult_from)))
+      {
+        give chest ~locked;
+        "You hear a click. That must have been the correct combination.";
+      }
+  ],
+has light;
+
+!----------------------------------------
+! Hole
+!----------------------------------------
+Object "hole" room32
+with
+  name 'hole',
+  description "This is the hole that you created when you blew up the stump.",
+has scenery;
+
+!----------------------------------------
+! Chest
+!----------------------------------------
+Object chest "chest" room32
+class OpenableContainer
+with
+  name 'chest',
+  description
+  [;
+    print "It's a heavy wooden chest with iron reinforcing. ";
+    if (self has locked)
+      "It's locked with a five-digit combination lock. You will need to ENTER the combination to unlock it. ";
+    <<Search self>>;
+  ],
+  before
+  [;
+    Lock:
+      if (self has locked)
+        "It's already locked.";
+      if (self has open)
+        "You'll need to close it first.";
+      give self locked;
+      "You change the combination so that it's now locked again.";
+    Unlock:
+      if (self hasnt locked)
+        "It's already unlocked.";
+      "It doesn't have a keyhole. You'll need to unlock it by ENTERing the combination.";
+  ],
+  after
+  [;
+    Open:
+      if (self hasnt general)
+      {
+        give self general;
+        "Oh, wow! Your eyes are dazzled by the brilliance of the gold-covered object in the chest. It's the Ark of the Covenant! It's not the real thing, but a one-fifth size replica. Even so, it's just as beautiful as you imagine the real Ark to be and you immediately understand why the Church Council wants it to be recovered.";
+      }
+  ],
+has container lockable locked openable static;
+
+!----------------------------------------
+! Ark of the Covenant
+!----------------------------------------
+Object ark "Ark of the Covenant" chest
+with
+  article THE,
+  parse_name
+  [ i;
+    while (NextWord() == 'ark' or 'of' or 'the' or 'covenant' or 'sacred' or 'relic' or 'reproduction' or 'replica')
+      i++;
+    return i;
+  ],
+  description "It's an absolutely beautiful reproduction of the most sacred relic of the Israelites. You estimate that it's one fifth the size of the original. It consists of a rectangular box 16 cm wide, 16 cm high, 26 cm long and gilded with gold. There are gold rings attached to the four corners with two gold staves passing lengthwise through the rings on each side. The golden lid is ornamented with two golden cherubim.",
+  add_to_scope
+  [;
+    PlaceInScope(box);
+    PlaceInScope(rings);
+    PlaceInScope(staves);
+    PlaceInScope(lid);
+    PlaceInScope(cherubim);
+  ],
+has;
+
+!----------------------------------------
+! Rectangular box
+!----------------------------------------
+Object box "gold box"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'gold' or 'golden' or 'rectangular' or 'box' or 'four' or 'corner' or 'corners//p')
+      i++;
+    return i;
+  ],
+  description "The original box was made from acacia wood, but you can't tell what this box is made from, as it's covered in gold.",
+  before
+  [;
+    Open:
+      "It's only a replica. You can't open the lid of the gold box.";
+    Take:
+      print_ret (CTheyreOrThats)self, (string)ATTACHED_TO_ARK;
+  ],
+has scenery;
+
+!----------------------------------------
+! Gold rings
+!----------------------------------------
+Object rings "gold rings"
+with
+  article "four",
+  parse_name
+  [ i;
+    while (NextWord() == 'four' or 'gold' or 'golden' or 'ring' or 'rings//p')
+      i++;
+    return i;
+  ],
+  description "There are four gold rings, each attached to one corner of the box.",
+  before
+  [;
+    Take:
+      print_ret (CTheyreOrThats)self, (string)ATTACHED_TO_ARK;
+  ],
+has pluralname scenery;
+
+!----------------------------------------
+! Gold staves
+!----------------------------------------
+Object staves "gold staves"
+with
+  article TWO,
+  parse_name
+  [ i;
+    while (NextWord() == 'gold' or 'golden' or 'staff' or 'staves//p')
+      i++;
+    return i;
+  ],
+  description "The original staves were made from acacia wood, but you can't tell what these staves are made from, as they're covered in gold. They're about three times as long as the box.",
+  before
+  [;
+    Take:
+      print_ret (CTheyreOrThats)self, (string)ATTACHED_TO_ARK;
+  ],
+has pluralname scenery;
+
+!----------------------------------------
+! Golden lid
+!----------------------------------------
+Object lid "gold lid"
+with
+  parse_name
+  [ i;
+    while (NextWord() == 'gold' or 'golden' or 'lid' or 'kapporet' or 'mercy' or 'seat')
+      i++;
+    return i;
+  ],
+  description "The golden lid, known as the 'kapporet' or 'mercy seat', has a gold cherub attached at each end. The lid of the original Ark could be removed to reveal the two stone tablets with the Ten Commandments, but this lid is only decorative and firmly attached.",
+  before
+  [;
+    Open:
+      <<Open box>>;
+    Take:
+      print_ret (CTheyreOrThats)self, (string)ATTACHED_TO_ARK;
+  ],
+has scenery;
+
+!----------------------------------------
+! Cherubim
+!----------------------------------------
+Object cherubim "gold cherubim"
+with
+  article TWO,
+  parse_name
+  [ i;
+    while (NextWord() == 'two' or 'gold' or 'golden' or 'cherub' or 'cherubim//p' or 'cherubs//p' or 'feathered' or 'bird-like' or 'wing' or 'wings//p')
+      i++;
+    return i;
+  ],
+  description "The cherubim are neither human nor animal, but have features of both. They have feathered bird-like wings and sit back to back at each end of the box with a space between them where God will appear to speak to the people. They appear to be made from solid gold.",
+  before
+  [;
+    Take:
+      print_ret (CTheyreOrThats)self, (string)ATTACHED_TO_ARK;
+  ],
+has pluralname scenery;
+
+!========================================
+! Printing rules
+!========================================
+[ consultWord word i;
+  for (i=0:i<WordLength(word):i++)
+    print (char)LowerCase(WordAddress(word)->i);
+];
+
+[ DoesntOrDont obj;
+  if (obj has pluralname)
+    print "don't";
+  else
+    print "doesn't";
+];
+
+[ firstConsultWord word i;
+  for (i=0:i<WordLength(word):i++)
+    if (i == 0)
+      print (char)UpperCase(WordAddress(word)->i);
+    else
+      print (char)LowerCase(WordAddress(word)->i);
+];
+
+[ OpenOrClosed obj;
+  if (obj has open)
+    print "open";
+  else
+    print "closed";
+  return;
+];
+
+!========================================
+! Other routines
+!========================================
+[ CompareString string1 array2 length i;
+  string1.print_to_array(stringArray);
+  array2 = WordAddress(consult_from + 1);
+  length = WordLength(consult_from + 1);
+  if (stringArray->1 ~= length)
+    rfalse;
+  for (i=0:i<length:i++)
+    if (stringArray->(i+2) ~= array2->i)
+      rfalse;
+  rtrue;
+];
+
+[ CompareStringWithByteArray string1 array2 length i;
+if (string1->0 ~= length)
+  rfalse;
+for (i=0:i<length:i++)
+  if (string1->(i+1) ~= array2->i)
+    rfalse;
+rtrue;
+];
+
+[ LowerCase c; ! for ZSCII matching ISO 8859-1
+  switch (c)
+  {
+    'A' to 'Z': c = c + 32;
+    202, 204, 212, 214, 221: c--;
+    217, 218: c = c - 2;
+    158 to 160, 167, 168, 208 to 210: c = c - 3;
+    186 to 190, 196 to 200: c = c - 5 ;
+    175 to 180: c = c - 6;
+  }
+  return c;
+];
+
+[ UpperCase c; ! for ZSCII matching ISO 8859-1
+  switch (c)
+  {
+    'a' to 'z': c = c - 32;
+    201, 203, 211, 213, 220: c++;
+    215, 216: c = c + 2;
+    155 to 157, 164, 165, 205 to 207: c = c + 3;
+    181 to 185, 191 to 195: c = c + 5 ;
+    169 to 174: c = c + 6;
+  }
+  return c;
+];
+
+!========================================
+! Grammar
+!========================================
+Extend 'blow'
+  * 'on'/'onto' noun -> Blow
+  * 'out' noun -> Extinguish
+  * noun 'out' -> Extinguish;
+
+Extend 'climb' first
+  * 'up' -> Ascend
+  * 'up' noun -> Ascend
+  * 'down' -> Descend
+  * 'down' noun -> Descend
+  * 'off' noun -> Exit
+  * 'out' 'of' noun -> Exit
+  * 'in'/'into'/'on'/'onto'/'out'/'through' noun -> Enter;
+
+Extend 'dig'
+  * -> Dig
+  * noun 'with' held -> Dig;
+
+Extend only 'enter' !first
+  * topic -> EnterNumber;
+
+Extend 'lock' first
+  * noun -> Lock;
+
+Extend 'look'
+  * 'into' noun -> Search
+  * 'under' noun -> LookUnder
+  * 'up' topic 'in' noun -> Consult reverse;
+
+Extend only 'put'
+  * 'out' noun -> Extinguish
+  * noun 'out' -> Extinguish;
+
+Extend 'read' replace
+  * noun -> Read
+  * 'about' topic 'in' noun -> Consult reverse
+  * topic 'in' noun -> Consult reverse;
+
+
+Extend only 'say' first
+  * topic -> Say;
+
+Extend only 'speak' replace
+  * -> Talk
+  * creature -> Talk
+  * noun -> Talk
+  * 'to'/'with' creature -> Talk
+  * 'to'/'with' noun -> Talk
+  * 'to'/'with' creature 'about' topic -> Ask
+  * 'to'/'with' noun 'about' topic -> Ask;
+
+Extend 'unlock' first
+  * noun -> Unlock;
+
+Verb meta 'about' 'info'
+  * -> About;
+
+Verb meta 'credits'
+  * -> Credits;
+
+Verb 'extinguish' 'douse' 'snuff' 'unlight'
+  * noun -> Extinguish;
+
+Verb 'fart'
+  * -> Fart;
+
+Verb 'greet'
+  * creature -> Talk
+  * noun -> Talk;
+
+Verb meta 'help' 'instructions'
+  * -> Help;
+
+Verb 'hint' 'clue'
+  * -> Hint;
+
+Verb 'shovel' = 'dig';
+
+Verb 'talk' 'babble' 'chat' 'communicate' 'converse' 'gab' 'gossip'
+  * -> Talk
+  * creature -> Talk
+  * noun -> Talk
+  * 'to'/'with' creature -> Talk
+  * 'to'/'with' noun -> Talk
+  * 'to'/'with' creature 'about' topic -> Ask
+  * 'to'/'with' noun 'about' topic -> Ask;
+
+Verb 'use'
+  * -> Use
+  * noun -> Use;
+
+Verb 'xyzzy' 'plover' 'plugh' 'yoho'
+  * -> MagicWord;
+
+!========================================
+! Actions
+!========================================
+[ AboutSub;
+  print "This game was written for ParserComp 2023, which ran from 30 April to 30 June 2023.^^The idea for the game came from an unpublished AdventureWriter program called 'Kingdom of the Arc' written by Jeff Smith circa 1986 for the Atari 8-bit computer.^^";
+  <<Credits>>;
+];
+
+[ AscendSub;
+  <<Go FAKE_U_OBJ>>;
+];
+
+[ CreditsSub;
+  "Concept by Jeff Smith.^Game design and coding by Garry Francis.^Play testing by Jade J Aincioa, John Ziegler, Larry Horsfield, Max Fog, Reiko Yukawa, Trenton Thompson and VanishingSky.";
+];
+
+[ DescendSub;
+  <<Go FAKE_D_OBJ>>;
+];
+
+[ EnterNumberSub i len;
+  if (chest notin location)
+    "I have no idea what you're trying to enter.";
+  if (consult_words ~= 1)
+    "You only need one word to enter the combination.";
+  len = WordLength(consult_from);
+  if (len ~= 5)
+    "You need to enter a 5-digit number.";
+  for (i=0: i<len: i++)
+    if (WordAddress(consult_from)->i < '1' || WordAddress(consult_from)->i >'9')
+      "The combination only uses digits from 1 to 9.";
+  print "You enter ~", (consultWord)consult_from, "~.^^";
+  if (AfterRoutines())
+    return;
+  "Nothing happens.";
+];
+
+[ ExtinguishSub;
+  "You can't extinguish ", (ThatOrThose)noun, ".";
+];
+
+[ FartSub;
+  "Did you know that it's a bad idea to fart in church, because you have to share the pew with other people?";
+];
+
+[ GoSub _prop;
+  if (selected_direction == ne_to or nw_to or se_to or sw_to)
+    "There are no diagonal directions in this game.";
+  _prop = selected_direction;
+#Iftrue RUNTIME_ERRORS > RTE_MINIMUM;
+  if (_prop == 0)
+    return _RunTimeError(ERR_INVALID_DIR_PROP);
+#Endif;
+  GoDir(_prop);
+];
+
+[ HelpSub;
+  print "Tell me what to do using simple commands starting with a verb.^^Use LOOK (or L) to refresh the location description. Identify all the objects in the description and EXAMINE (or X) each one. Read responses carefully for hints.^^Use compass directions (N, S, E, W, U and D) to move around. Draw a map as you go.^^Use GET or TAKE to take objects and DROP to drop them again. Use INVENTORY (or I) to see what you're carrying.^^Use AGAIN (or G) to repeat the last command.^^";
+#Ifv5;
+  print "Use UNDO to undo the last command if you make a mistake.^^";
+#Endif;
+  "Use SAVE to save the game and RESTORE to restore it again. Use QUIT to end the game or RESTART to restart from the beginning.^^There are over 100 verbs that you can use, so if something doesn't work, try a different verb or a different way of doing things. Use HINT if you get stuck.^^For full instructions, see the game page at <https://warrigal.itch.io/search-for-the-lost-ark>.";
+];
+
+[ HintSub;
+  "If you've examined everything, then there's nothing else to do here.";
+];
+
+[ LockSub k;
+  if (ObjectIsUntouchable(noun))
+    return;
+  if (noun hasnt lockable)
+  {
+    PrintMsg(MSG_LOCK_NOT_A_LOCK, 'lock');
+    rtrue;
+  }
+  if (noun has locked)
+  {
+    PrintMsg(MSG_LOCK_ALREADY_LOCKED);
+    rtrue;
+  }
+  if (noun has open)
+  {
+    PrintMsg(MSG_LOCK_CLOSE_FIRST);
+    rtrue;
+  }
+  k = RunRoutines(noun, with_key);
+  if (k == nothing)
+    "You can't see how to lock ", (ItOrThem)noun, ".";
+  if (second == nothing && k ~= nothing && k in player)
+  {
+    second = k;
+    print "(with ", (the)second, ")^";
+  }
+  if (second == nothing)
+    "You don't have the key.";
+  if (second ~= k)
+  {
+    PrintMsg(MSG_LOCK_KEY_DOESNT_FIT);
+    rtrue;
+  }
+  give noun locked;
+  run_after_routines_msg = MSG_LOCK_DEFAULT;
+  run_after_routines_arg_1 = 'lock';
+];
+
+[ LookUnderSub;
+  if (location == thedark)
+    "But it's dark.";
+  "You find nothing of interest.";
+];
+
+[ MagicWordSub;
+  "The Vicar of Dibley appears in a puff of smoke and says, ~Two nuns are driving through Transylvania when a great big vampire jumps on the bonnet. One nun says to the other 'Show him your cross'. So, the nun opens the window and yells, 'Get off my bonnet you toothy git'.~^^~Hang on. You're not Alice. Where's Alice?~ With that, the vicar fades away.";
+];
+
+[ ReadSub;
+  if (ObjectIsUntouchable(noun, true))
+    "I suppose you read tea leaves, too";
+  "There's nothing legible on ", (ThatOrThose)noun, ".";
+];
+
+[ SaySub i;
+  if (consult_words == 0)
+    "You have nothing to say.";
+  print "~";
+  i = consult_from;
+  print (firstConsultWord)i++;
+  while (i < consult_from + consult_words)
+    print " ", (consultWord)i++;
+  print ".~^^";
+  if (AfterRoutines())
+    return;
+  "Nothing happens.";
+];
+
+[ TalkSub;
+  if (noun == nothing)
+    "You start talking to no one in particular.";
+  if (noun == player)
+    "You start talking to yourself, but it's a one-sided conversation.";
+  if (RunLife(noun, ##Talk))
+    rtrue;
+  print_ret (The)noun, " ", (IsOrAre)noun, " not very talkative.";
+];
+
+[ UnlockSub k;
+  if (ObjectIsUntouchable(noun))
+    return;
+  if (noun hasnt lockable)
+  {
+    PrintMsg(MSG_UNLOCK_NOT_A_LOCK, 'unlock');
+    rtrue;
+  }
+  if (noun hasnt locked)
+  {
+    PrintMsg(MSG_UNLOCK_ALREADY_UNLOCKED, 'unlock');
+    rtrue;
+  }
+  k = RunRoutines(noun, with_key);
+  if (k == nothing)
+    "You can't see how to unlock ", (ItOrThem)noun, ".";
+  if (second == nothing && k ~= nothing && k in player)
+  {
+    second = k;
+    print "(with ", (the)second, ")^";
+  }
+  if (second == nothing)
+    "You don't have the key.";
+  if (second ~= k)
+  {
+    PrintMsg(MSG_UNLOCK_KEY_DOESNT_FIT);
+    rtrue;
+  }
+  give noun ~locked;
+  run_after_routines_msg = MSG_UNLOCK_DEFAULT;
+  run_after_routines_arg_1 = 'unlock';
+];
+
+[ UseSub;
+  "You'll have to be a bit more explicit than that.";
+];
+
+End;

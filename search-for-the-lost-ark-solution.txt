@@ -1,0 +1,165 @@
+Search for the Lost Ark
+By Garry Francis
+For Z-code interpreters
+
+Solution by Garry Francis
+----------------------------------------
+This is a minimal solution. You'll need to EXAMINE lots of things for this solution to make sense. Some optional (but significant) commands are shown in parentheses. These can be omitted once you know what to do.
+
+Your goal is to find the Ark of the Covenant and return it to the altar in your local church. The Ark has been hidden in a chest, so you firstly have to find the chest. When you find it, you'll see that it is locked with a five-digit combination lock, so you'll have to find the five digits used for the combination and work out the sequence to enter the digits. The five digits of the combination are scattered throughout the game as references to Biblical passages. The references are randomly allocated at the start of the game. The Biblical passages provide the numbers you need. You can look these up in the Bible that you find in the game. (If you have a King James version of the Bible, you can also look them up in a real Bible.) There are 7000 possible combinations, so you will have to find and read all the Bible references to work out the combination before you can unlock the chest.
+
+(I) (you're wearing a cassock)
+W
+OPEN GATE
+S
+X TRENCH (you find a shovel)
+GET SHOVEL
+GET HAMMER
+N
+E
+S
+DIG EARTH WITH SHOVEL (you expose a coffin)
+DROP SHOVEL
+OPEN COFFIN (you find a body and a silver key)
+(X KEY) (why would anyone bury a key with a body unless trying to hide it?)
+GET KEY
+(X IT) (you have no idea what it opens)
+N
+E
+(OPEN DOOR) (it's locked)
+UNLOCK DOOR WITH KEY
+OPEN IT
+N
+U
+GET SUIT
+X STEEPLE (you find an engraving)
+(X ENGRAVING) (perhaps you should read it)
+READ ENGRAVING (it says 'Exodus x:y', take note of this for later)
+(X ROOF) (there's something painted on it)
+D
+S
+E
+(OPEN DOOR) (it's locked)
+UNLOCK DOOR WITH KEY
+OPEN IT
+N
+(X RELICS) (paintings, statues and knick knacks)
+(GET RELICS) (they belong to church, crucifix belongs in vicarage)
+GET CRUCIFIX
+S
+E
+GET CANDLE
+(X BIBLE) (it's the authorised King James version)
+(READ IT) (try CONSULT BIBLE ABOUT CONTENTS or passage)
+(CONSULT BIBLE ABOUT CONTENTS) (books of Moses are Genesis, Exodus, Leviticus, Numbers and Deuteronomy, this is the sequence of the combination)
+GET BIBLE (you reveal a message scratched on the lectern)
+READ MESSAGE (it says, 'Numbers x:y', take note of this for later)
+W
+S
+GET MATCHES
+N
+W
+W (candle blows out)
+W
+W
+S
+W
+(E) (front door is closed)
+OPEN DOOR
+E (Father Alucard is here)
+(N) (Father Alucard blocks the way and exposes his sharp molars)
+(X FATHER) (pale complexion, Romanian accent, sharp molars, sounds like vampire)
+(TALK TO HIM)
+(ASK HIM ABOUT lots of stuff)
+SHOW CRUCIFIX TO FATHER (he screams and turns to ashes)
+(X ASHES) (you wonder whether the ashes may conceal something)
+SEARCH ASHES (you find an iron key)
+GET KEY
+(OPEN DOOR) (it's locked)
+UNLOCK DOOR WITH IRON KEY
+OPEN IT
+N
+LOOK UNDER BED (you find a ladder)
+GET LADDER
+S
+W
+DROP LADDER (you prop it against the wall)
+U
+(X ROOF) (there's painting on one of the tiles)
+READ PAINTING (it says, 'Leviticus x:y', take note of this for later)
+D
+N
+N
+W
+(N) (it's too cold)
+REMOVE CASSOCK (you're now in your underwear)
+WEAR DIVING SUIT
+DROP ALL
+N
+D
+(N) (reeds block the way)
+(X REEDS) (they're quite thick and make exploration difficult)
+MOVE REEDS (you see an underwater grotto to north)
+N
+(X BOULDER) (there's a carving on it)
+(X CARVING) (perhaps you should read it)
+READ CARVING (it says, 'Genesis x:y', take note of this for later)
+S
+U
+S
+(E) (it's too cumbersome to wear diving suit on land)
+REMOVE DIVING SUIT (you drop it on ground, you're now wearing your underwear)
+(E) (you can't go wandering about in your underwear)
+GET ALL EXCEPT DIVING SUIT
+WEAR CASSOCK
+E
+S
+E
+E
+E
+N
+E
+(E) (the wall blocks the way)
+BREAK WALL WITH SLEDGE HAMMER (becomes pile of rubble)
+DROP SLEDGE HAMMER
+E (it's too dark to see)
+LIGHT CANDLE
+GET DYNAMITE
+READ WRITING (it says, 'Deuteronomy x:y', take note of this for later)
+W
+W (candle blows out)
+N
+N
+W
+(X STUMP) (there's a seal on it and roots around base)
+(X SEAL) (includes two concentric rings with writing between the rings)
+(READ SEAL) (appears to be seal of Knights Templar)
+(X ROOTS) (you see a small hole)
+(X HOLE) (there appears to be something in it)
+PUT DYNAMITE IN HOLE
+LIGHT IT WITH MATCHES
+E
+Z
+Z (kaboom!)
+W (there's now a large hole in the ground)
+D (there's a chest here)
+(X CHEST) (it has a 5-digit combination lock)
+READ GENESIS x:y IN BIBLE (note the number, this is a)
+READ EXODUS x:y IN BIBLE (note the number, this is b)
+READ LEVITICUS x:y IN BIBLE (note the number, this is c)
+READ NUMBERS x:y IN BIBLE (note the number, this is d)
+READ DEUTERONOMY x:y IN BIBLE (note the number, this is e)
+ENTER abcde (enter numbers in same sequence as books of Moses, chest unlocks)
+OPEN CHEST (you find the Ark of the Covenant)
+(X ARK) (it's not the real thing, but a one-fifth size reproduction)
+GET ARK
+U
+E
+S
+S
+S
+E
+E
+E
+PUT ARK ON ALTAR
+***THE END***
